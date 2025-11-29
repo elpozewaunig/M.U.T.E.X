@@ -26,7 +26,7 @@ size = Vector3(2, 2, 2)
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7p1mj"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_7p1mj"]
-radius = 5.0
+radius = 50.0
 
 [node name="Enemy" type="CharacterBody3D" groups=["enemies"]]
 collision_layer = 2

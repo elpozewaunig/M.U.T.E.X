@@ -50,7 +50,7 @@ func _setup_patrol_path() -> void:
 	var selected_path: Path3D = all_paths.pick_random()
 	_load_patrol_points(selected_path)
 	
-	print("Enemy spawned with %d patrol points" % patrol_points.size())
+	# print("Enemy spawned with %d patrol points" % patrol_points.size())
 
 func _load_patrol_points(path: Path3D) -> void:
 	patrol_points.clear()
@@ -192,7 +192,7 @@ func rotate_towards(direction: Vector3, delta: float) -> void:
 	basis = basis.slerp(target_basis, ROTATION_SPEED * delta)
 
 func _on_detection_area_body_entered(body: Node3D) -> void:
-	print("Something entered detection: ", body.name, " Groups: ", body.get_groups())
+	# print("Something entered detection: ", body.name, " Groups: ", body.get_groups())
 	if current_state == PATROLLING and body.is_in_group(PLAYERS_GROUP_NAME):
 		target_player = body
 		current_state = CHASING

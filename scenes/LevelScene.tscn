@@ -48,7 +48,7 @@ environment = SubResource("Environment_dfg5a")
 
 [node name="EnemySpawner" type="MultiplayerSpawner" parent="."]
 spawn_path = NodePath("../Enemies")
-spawn_limit = 10
+spawn_limit = 15
 
 [node name="EnemySpawnTimer" type="Timer" parent="."]
 wait_time = 2.0
