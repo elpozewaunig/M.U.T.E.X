@@ -18,7 +18,8 @@ func _ready():
 	$LifeTimer.timeout.connect(queue_free)
 	body_entered.connect(_on_impact)
 
-
+func initialize():
+	pass
 # Called manually by the Gun Script (Server Only)
 func setup_server_logic(is_host: bool):
 	shooter_is_host = is_host

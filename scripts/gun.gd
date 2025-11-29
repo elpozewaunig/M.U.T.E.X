@@ -15,7 +15,7 @@ func _process(_delta):
 		
 		rpc_id(1, "spawn_missile", false, gun_ray.global_position, gun_ray.global_transform.basis)
 
-@rpc("any_peer", "call_local")
+@rpc("any_peer", "call_remote","reliable")
 func spawn_missile(isHost, position, transform):
 	# Security: Only Server spawns
 	if not multiplayer.is_server(): return
@@ -42,4 +42,4 @@ func spawn_missile(isHost, position, transform):
 	# 6. Setup Logic
 	# owner.name == "1" checks if the shooter is the Host
 	if missile.has_method("setup_server_logic"):
-		missile.setup_server_logic(isHost)
+		missile.initialize()
