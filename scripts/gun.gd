@@ -12,10 +12,8 @@ func _process(_delta):
 		
 	if Input.is_action_just_pressed("shoot"):
 		# Networking Check
-		if multiplayer.is_server():
-			spawn_missile(true, gun_ray.global_position, gun_ray.global_transform.basis)
-		else:
-			rpc_id(1, "spawn_missile", false, gun_ray.global_position, gun_ray.global_transform.basis)
+		
+		rpc_id(1, "spawn_missile", false, gun_ray.global_position, gun_ray.global_transform.basis)
 
 @rpc("any_peer", "call_local")
 func spawn_missile(isHost, position, transform):

@@ -37,4 +37,5 @@ shape = SubResource("SphereShape3D_7880j")
 wait_time = 2.0
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_interval = 0.1
 replication_config = SubResource("SceneReplicationConfig_jwe45")
