@@ -18,26 +18,6 @@ func _ready():
 	$LifeTimer.timeout.connect(queue_free)
 	body_entered.connect(_on_impact)
 
-	## 2. CLIENT INITIALIZATION
-	## Clients need to wait for the data (shooter_is_host) to arrive from the Server.
-	#if not multiplayer.is_server():
-		## Turn off physics/collision momentarily to prevent bugs
-		#set_physics_process(false)
-		#monitoring = false
-		#
-		## Wait one frame for the MultiplayerSynchronizer to update variables
-		#await get_tree().process_frame 
-		#
-		## Now that we have the data, setup the masks
-		#_apply_collision_logic()
-		#
-		## Turn physics back on
-		#monitoring = true
-		#set_physics_process(true)
-	#else:
-		## Server runs immediately
-		#_apply_collision_logic()
-
 
 # Called manually by the Gun Script (Server Only)
 func setup_server_logic(is_host: bool):

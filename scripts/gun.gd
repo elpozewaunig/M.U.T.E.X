@@ -15,7 +15,7 @@ func _process(_delta):
 		if multiplayer.is_server():
 			spawn_missile(true, gun_ray.global_position, gun_ray.global_transform.basis)
 		else:
-			rpc_id(1, "spawn_missile", gun_ray.global_position, gun_ray.global_transform.basis)
+			rpc_id(1, "spawn_missile", false, gun_ray.global_position, gun_ray.global_transform.basis)
 
 @rpc("any_peer", "call_local")
 func spawn_missile(isHost, position, transform):
@@ -29,7 +29,7 @@ func spawn_missile(isHost, position, transform):
 	missile.name = "M_%d" % randi()
 	
 	# 3. Find Container
-	var container = get_node("/root/LevelScene/Bullets")
+	var container = get_node("/root/LevelScene/Bullets/")
 	if not container:
 		printerr("Gun Error: No 'Bullets' node found in LevelScene")
 		return
