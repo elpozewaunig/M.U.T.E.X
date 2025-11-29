@@ -4,7 +4,7 @@
 
 [sub_resource type="BoxMesh" id="BoxMesh_og67c"]
 
-[node name="Gun" type="Node3D"]
+[node name="EnemyGun" type="Node3D"]
 script = ExtResource("1_7w47d")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -17,3 +17,7 @@ target_position = Vector3(0, 0, -1)
 hit_from_inside = true
 debug_shape_custom_color = Color(0.78039217, 0.88235295, 0.050980393, 1)
 debug_shape_thickness = 5
+
+[node name="CooldownTimer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true

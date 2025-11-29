@@ -166,6 +166,7 @@ func chase_player(delta: float) -> void:
 	else:
 		velocity = Vector3.ZERO
 		rotate_towards(desired_direction, delta)
+		shoot_gun()
 		current_state = ATTACKING
 
 func attack_player(delta: float) -> void:
@@ -180,7 +181,7 @@ func attack_player(delta: float) -> void:
 	
 	if distance < ATTACK_RANGE and distance > AVOID_RANGE:
 		velocity = Vector3.ZERO
-		# TODO: Implement shooting/attacking
+		shoot_gun()
 	elif distance < AVOID_RANGE:
 		var avoidance = detect_obstacles(-direction)
 		move_in_direction((-direction + avoidance).normalized(), delta)
@@ -328,8 +329,8 @@ func _on_detection_area_body_exited(body: Node3D) -> void:
 func shoot_gun() -> void:
 	# Calls the method on the gun node inside Visuals
 	# Make sure your Gun node actually has this method
-	if has_node("Visuals/Gun"):
-		$Visuals/Gun.shoot_homing_missile()
+	if has_node("Visuals/EnemyGun"):
+		$Visuals/EnemyGun.shoot_homing_missile()
 
 @rpc("any_peer", "call_local")
 func take_damage(damage_amount):

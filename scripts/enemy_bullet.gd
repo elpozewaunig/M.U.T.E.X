@@ -6,9 +6,9 @@ extends Area3D
 
 var velocity := Vector3.ZERO
 var current_target: Node3D = null
+var shooter: CharacterBody3D = null
 
 # We need to know who shot to determine what to chase
-var shooter_is_host := false 
 
 func _ready():
 	# 1. Setup Initial Velocity (Flying straight forward)
@@ -21,9 +21,9 @@ func _ready():
 	body_entered.connect(_on_impact)
 
 
-func setup_bullet(is_fired_by_host: bool):
-	shooter_is_host = is_fired_by_host
+func setup_bullet(_shooter: CharacterBody3D):
 	velocity = -global_transform.basis.z * speed
+	shooter = _shooter
 	# RESET MASKS
 	collision_mask = 0
 	$DetectionArea.collision_mask = 0
@@ -60,7 +60,7 @@ func _physics_process(delta):
 
 func find_best_target():
 	# Get all bodies inside the large Detection Sphere
-	var possible_targets = $DetectionArea.get_overlapping_bodies()
+	var possible_targets: Array[Node3D] = $DetectionArea.get_overlapping_bodies()
 	
 	if possible_targets.is_empty():
 		return
@@ -70,16 +70,26 @@ func find_best_target():
 	var best_candidate = null
 	
 	for body in possible_targets:
-		# Since we set the DetectionArea Mask in 'setup_bullet', 
-		# we are GUARANTEED that 'body' is the correct enemy type.
-		var dist = global_position.distance_to(body.global_position)
-		if dist < closest_dist:
-			closest_dist = dist
-			best_candidate = body
+		# Do not hit yourself
+		if not target_is_shooter_itself(body):
+			# Since we set the DetectionArea Mask in 'setup_bullet', 
+			# we are GUARANTEED that 'body' is the correct enemy type.
+			var dist = global_position.distance_to(body.global_position)
+			if dist < closest_dist:
+				closest_dist = dist
+				best_candidate = body
 			
 	current_target = best_candidate
 
+func target_is_shooter_itself(target: Node3D) -> bool:
+	# if target is child of shooter or shooter itself return true
+	return is_instance_valid(shooter) and is_instance_valid(target) and (shooter.is_ancestor_of(target) or shooter == target) 
+
 func _on_impact(body):
+	# Do not hit yourself
+	if target_is_shooter_itself(body):
+		return
+		
 	print("Bullet hit: ", body.name)
 	if body.has_method("take_damage"):
 		body.take_damage(damage)
