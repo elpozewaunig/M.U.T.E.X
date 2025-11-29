@@ -99,6 +99,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_s8smt")
 
 [node name="Rocket" type="Node3D"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
 
 [node name="ThrusterExhaust" parent="." instance=ExtResource("1_3341w")]
 transform = Transform3D(0.14, 0, 0, 0, -6.11959e-09, -0.14, 0, 0.14, -6.11959e-09, 0, 0, -1.32985)
