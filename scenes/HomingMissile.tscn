@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://cw7nwn4hkmwyl"]
+[gd_scene load_steps=6 format=3 uid="uid://c3kmfsvv0sjvu"]
 
-[ext_resource type="Script" uid="uid://cqnjbk4y12ikk" path="res://scripts/bulletScript.gd" id="1_mkf8s"]
-[ext_resource type="PackedScene" uid="uid://cin7k7075t28o" path="res://scenes/rocket.tscn" id="2_y25gk"]
+[ext_resource type="Script" uid="uid://cqnjbk4y12ikk" path="res://scripts/bulletScript.gd" id="1_ehys8"]
+[ext_resource type="PackedScene" uid="uid://cin7k7075t28o" path="res://scenes/rocket.tscn" id="2_ruvl0"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_y25gk"]
 height = 2.7907715
@@ -22,10 +22,10 @@ properties/3/path = NodePath(".:scale")
 properties/3/spawn = true
 properties/3/replication_mode = 1
 
-[node name="Bullet" type="Area3D"]
-script = ExtResource("1_mkf8s")
+[node name="HomingMissile" type="Area3D"]
+script = ExtResource("1_ehys8")
 
-[node name="Rocket" parent="." instance=ExtResource("2_y25gk")]
+[node name="Rocket" parent="." instance=ExtResource("2_ruvl0")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.36831325, 0, 0, 0, -0.008451483, -0.3904885, 0, 1.0413373, -0.003169201, 0.0019836426, 9.086693e-05, 0.054075524)
