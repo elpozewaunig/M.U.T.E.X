@@ -18,6 +18,7 @@ config/icon="res://assets/sprites/icon.svg"
 [autoload]
 
 NetworkManager="*res://scripts/networkManager.gd"
+ScoreManager="*res://scripts/scoreManager.gd"
 
 [display]
 

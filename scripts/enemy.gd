@@ -236,8 +236,20 @@ func _on_detection_area_body_exited(body: Node3D) -> void:
 		
 
 #Chris injected low quality code here
-func take_damage(damage):
-	print("Taking Damage")
-	health = health - damage
+#func take_damage(damage):
+#	print("Taking Damage")
+#	health = health - damage
+#	if health <= 0:
+#		queue_free()
+@rpc("any_peer", "call_local")
+func take_damage(damage_amount):
+	if not multiplayer.is_server():
+		rpc_id(1, "take_damage", damage_amount)
+		return
+
+	health -= damage_amount
+	
 	if health <= 0:
+		ScoreManager.add_score(1)
+		print("Taking Damage")
 		queue_free()
