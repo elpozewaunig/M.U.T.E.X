@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://curg5wfwg0y3w"]
+[gd_scene load_steps=17 format=3 uid="uid://curg5wfwg0y3w"]
 
 [ext_resource type="Script" uid="uid://b0g8rxgtpwr8c" path="res://scripts/levelScript.gd" id="1_in5yg"]
 [ext_resource type="PackedScene" uid="uid://c111b6l8it2x6" path="res://scenes/player.tscn" id="2_dfg5a"]
@@ -114,7 +114,7 @@ spawn_path = NodePath("../Enemies")
 spawn_limit = 15
 
 [node name="EnemySpawnTimer" type="Timer" parent="."]
-wait_time = 2.0
+wait_time = 10.0
 autostart = true
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
