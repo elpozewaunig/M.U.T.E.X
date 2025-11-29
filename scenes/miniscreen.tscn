@@ -1,0 +1,86 @@
+[gd_scene load_steps=5 format=3 uid="uid://dp3rvhbvdll7k"]
+
+[ext_resource type="Script" uid="uid://ojikmh0bkwii" path="res://scenes/miniscreen_controller.gd" id="1_4qlu7"]
+[ext_resource type="Theme" uid="uid://540k58tsq54u" path="res://scenes/orangetheme.tres" id="1_j2igt"]
+[ext_resource type="Texture2D" uid="uid://mem4hsrigu8e" path="res://assets/font/placeholder.jpg" id="2_e87qj"]
+
+[sub_resource type="Theme" id="Theme_uuqcg"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 48.0
+offset_bottom = 352.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4qlu7")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_j2igt")
+
+[node name="Control" type="MarginContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/Control"]
+layout_mode = 2
+theme = SubResource("Theme_uuqcg")
+alignment = 1
+
+[node name="Left" type="Panel" parent="Panel/Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.59
+theme = ExtResource("1_j2igt")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel/Control/HBoxContainer/Left"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 15
+text = "[ OK ] Inertial dampener mode change to 'combat' succeeded
+[ OK ] GRAVITATIONAL STABILIZER ADJUSTED
+[ OK ] Warp Intake Manifold Cooldown engaged
+
+[ WARN ] JAM PROCESS TERMINATED WITH ERROR EXIT CODE 1; 'SUBMISSION STATUS: INCOMPLETE'"
+
+[node name="Right" type="Panel" parent="Panel/Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/Control/HBoxContainer/Right"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="Panel/Control/HBoxContainer/Right/VBoxContainer"]
+layout_mode = 2
+text = "Host"
+
+[node name="Button2" type="Button" parent="Panel/Control/HBoxContainer/Right/VBoxContainer"]
+layout_mode = 2
+text = "Join"
+
+[node name="Placeholder" type="Sprite2D" parent="."]
+position = Vector2(785, 389)
+scale = Vector2(0.55973023, 0.59779954)
+texture = ExtResource("2_e87qj")

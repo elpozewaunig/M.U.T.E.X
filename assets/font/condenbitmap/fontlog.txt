@@ -1,0 +1,23 @@
+******************************************************************************
+[Font Name]　CondenBitmap
+[Version]　1.0
+[Maker's name]　No-Name-mio
+[Production]　Ubuntu 15.04 64bit+FontForge
+[Operating]　All of the environment which OpenType fonts to work
+[Created]　2015/10/28
+[License]　SIL Open Font License
+******************************************************************************
+Thanks you for downloading my font.
+In this font, if hit with a lowercase letter is displayed in uppercase.
+******************************************************************************
+[Contain character]
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+0123456789!"#$%&'()*+,-./:;<=>?@[\]^_{|}~`
+******************************************************************************
+Maker's name：No-name-mio
+Mail address：nonamio1203@gmail.com
+home page：http://nonamio.weebly.com
+Twitter:@erga1203
+
+******************************************************************************
+This README file made by hoehoe

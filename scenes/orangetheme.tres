@@ -1,0 +1,20 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://540k58tsq54u"]
+
+[ext_resource type="FontFile" uid="uid://bm8mst0c7qrjw" path="res://assets/font/condenbitmap/CondenBitmap.otf" id="1_lct0h"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uuqcg"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.42252263, 0.2660697, 0.1316855, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[resource]
+default_font = ExtResource("1_lct0h")
+default_font_size = 35
+Panel/styles/panel = SubResource("StyleBoxFlat_uuqcg")
