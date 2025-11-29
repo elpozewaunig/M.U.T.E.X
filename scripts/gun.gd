@@ -10,15 +10,34 @@ func _ready() -> void:
 	pass 
 
 func _process(_delta: float) -> void:
+	if not owner.is_multiplayer_authority():
+		return
+
 	if Input.is_action_just_pressed("shoot"):
-			shoot_homing_missile()
+		request_shoot()
 
+func request_shoot():
+	if not multiplayer.is_server():
+		rpc_id(1, "server_shoot_bullet")
+	else:
+		server_shoot_bullet()
 
-func shoot_homing_missile():
+@rpc("any_peer", "call_local")
+func server_shoot_bullet():
+	if not multiplayer.is_server():
+		return
+
 	var bullet = bulletScene.instantiate()
-	get_tree().root.add_child(bullet) 
+	var bullet_container = get_node("/root/LevelScene/Bullets")
+	
+	if bullet_container:
+		bullet_container.add_child(bullet)
+	else:
+		printerr("Error: Could not find 'Bullets' node in LevelScene!")
+		return
 
 	bullet.global_position = gun_ray.global_position
 	bullet.global_transform.basis = gun_ray.global_transform.basis
 	
-	bullet.setup_bullet(multiplayer.is_server())
+	if bullet.has_method("setup_bullet"):
+		bullet.setup_bullet(owner.name == "1", owner)
