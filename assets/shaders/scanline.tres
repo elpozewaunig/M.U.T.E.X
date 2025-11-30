@@ -4,8 +4,8 @@
 
 [resource]
 shader = ExtResource("1_eonlv")
-shader_parameter/scanline_count = 37.32400177289
-shader_parameter/scanline_speed = -0.2
-shader_parameter/scanline_strength = 1.0
-shader_parameter/rgb_offset_uv = 0.002
-shader_parameter/curvature = 1.035
+shader_parameter/scanline_count = 103.8730049339675
+shader_parameter/scanline_speed = -0.1
+shader_parameter/scanline_strength = 0.690000032775
+shader_parameter/rgb_offset_uv = 0.00265543514490127
+shader_parameter/curvature = 1.065

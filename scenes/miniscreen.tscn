@@ -1,10 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dp3rvhbvdll7k"]
+[gd_scene load_steps=6 format=3 uid="uid://dp3rvhbvdll7k"]
 
 [ext_resource type="Script" uid="uid://ojikmh0bkwii" path="res://scenes/miniscreen_controller.gd" id="1_4qlu7"]
 [ext_resource type="Theme" uid="uid://540k58tsq54u" path="res://scenes/orangetheme.tres" id="1_j2igt"]
 [ext_resource type="Texture2D" uid="uid://mem4hsrigu8e" path="res://assets/font/placeholder.jpg" id="2_e87qj"]
-
-[sub_resource type="Theme" id="Theme_uuqcg"]
+[ext_resource type="Texture2D" uid="uid://bwqjr8hrqdd33" path="res://assets/sprites/opsec und so.png" id="3_l6gtq"]
+[ext_resource type="FontFile" uid="uid://d304xnpnbruf4" path="res://assets/font/DSEG14-Classic/DSEG14Classic-Regular.ttf" id="3_oua23"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -26,61 +26,314 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_j2igt")
 
-[node name="Control" type="MarginContainer" parent="Panel"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 68.0
+offset_top = 175.0
+offset_right = 312.0
+offset_bottom = 175.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.376379, 0.6157288)
+theme_override_colors/default_color = Color(0.3766586, 0.37665844, 0.37665844, 1)
+theme_override_font_sizes/normal_font_size = 25
+text = "                                                                                                                           
+                                                                                                                           
+                                                                                                                           
+                                                                                                                           
+                                                                                                                           
+                                                                                                                           
+                  ##=###                                                                                 #####             
+               ##=   #    #                                                                          #    #    ##-         
+           #  ++     #+  #   #                                                                    #   :+  #     ##  #      
+                    #    #  #   =                                                               #   #  #   #               
+           ###### -##- #   .+ #   #                                                          #   #  #   #  ###### ######   
+             #  #    #    #   #  #   #                                                     #  #  #   #       #  # #  #     
+              # #   #        #    ###.   ###                                        ####   ###    #           # # # #      
+              # #                 #            #                                 +           #                * # # #      
+              # #             #     #        #     #                        #  -  #        #     #            : # # #      
+              # #           # #   #            #  #  #                    # +   #            #  #  #          : # # #      
+              # #          # #   :              #   # #                  # # * #              #   = #         : # # #      
+              # #         #   #  *                 # : #                #   #                    # = #        : # # #      
+              # #           # #                  #   #                  - # # .                #   #          * # # #      
+              # #   #       #   #                #   #  #                 #   #                #   #  =       # # # #      
+              # #    ##  #  #   #                #   +  #              =  #   #                #   =  #     ##  # # #      
+              # # ##     -  #   #                #   #  #              -  #   #                #   =  #       ### # #      
+                            # : .                #   #  #                 # # +                #   #  :                    
+                          # : #                    = #                  # . #                  - # # -                     
+                             #   #              #  #   :                   #   #              #  #                         
+                               #  #               # # *                      #  #               # # -                      
+                             ## #  #          #  # ##                      ## #  #          #  # ##                        
+                                      ##**##    #                                   ##**##    +                            
+                                    #        #                                    #        #                               
+                                                                                                                           
+                                                                                                                           
+                                                                                                                           
+                                                                                                                           
+                                                                                                                           "
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 61.0
+offset_top = 177.0
+offset_right = 305.0
+offset_bottom = 177.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.376379, 0.6157288)
+theme_override_font_sizes/normal_font_size = 25
+text = "                                                                                                                           
+                                                                                                                           
+                                                                                                                           
+                                                                                                                           
+                                                                                                                           
+                                                                                                                           
+                  ##=###                                                                                 #####             
+               ##=   #    #                                                                          #    #    ##-         
+           #  ++     #+  #   #                                                                    #   :+  #     ##  #      
+                    #    #  #   =                                                               #   #  #   #               
+           ###### -##- #   .+ #   #                                                          #   #  #   #  ###### ######   
+             #  #    #    #   #  #   #                                                     #  #  #   #       #  # #  #     
+              # #   #        #    ###.   ###                                        ####   ###    #           # # # #      
+              # #                 #            #                                 +           #                * # # #      
+              # #             #     #        #     #                        #  -  #        #     #            : # # #      
+              # #           # #   #            #  #  #                    # +   #            #  #  #          : # # #      
+              # #          # #   :              #   # #                  # # * #              #   = #         : # # #      
+              # #         #   #  *                 # : #                #   #                    # = #        : # # #      
+              # #           # #                  #   #                  - # # .                #   #          * # # #      
+              # #   #       #   #                #   #  #                 #   #                #   #  =       # # # #      
+              # #    ##  #  #   #                #   +  #              =  #   #                #   =  #     ##  # # #      
+              # # ##     -  #   #                #   #  #              -  #   #                #   =  #       ### # #      
+                            # : .                #   #  #                 # # +                #   #  :                    
+                          # : #                    = #                  # . #                  - # # -                     
+                             #   #              #  #   :                   #   #              #  #                         
+                               #  #               # # *                      #  #               # # -                      
+                             ## #  #          #  # ##                      ## #  #          #  # ##                        
+                                      ##**##    #                                   ##**##    +                            
+                                    #        #                                    #        #                               
+                                                                                                                           
+                                                                                                                           
+                                                                                                                           
+                                                                                                                           
+                                                                                                                           "
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 398.00003
+offset_top = 730.00006
+offset_right = 642.0
+offset_bottom = 730.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.3889232, 1.3889232)
+theme_override_fonts/normal_font = ExtResource("3_oua23")
+theme_override_font_sizes/normal_font_size = 30
+text = "- PRESS  START -"
+
+[node name="Panel3" type="Panel" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 100
-theme_override_constants/margin_top = 100
-theme_override_constants/margin_right = 100
-theme_override_constants/margin_bottom = 100
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/Control"]
-layout_mode = 2
-theme = SubResource("Theme_uuqcg")
-alignment = 1
-
-[node name="Left" type="Panel" parent="Panel/Control/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.59
 theme = ExtResource("1_j2igt")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Panel/Control/HBoxContainer/Left"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel3"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 120.0
+offset_top = 88.0
+offset_right = 364.0
+offset_bottom = 88.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 15
-text = "[ OK ] Inertial dampener mode change to 'combat' succeeded
+theme_override_font_sizes/normal_font_size = 25
+text = "[ OK ] TUNNEL MARGIN THRESHOLD ADJUSTED
+[ OK ] S.E.A.L. VERIFIED
+[ OK ] DEST. COORD. CONFIRM: 68 6F 62 62 79 6C 6F 73
+[ OK ] EXITING WARP TUNNEL . . .
+[ OK ] Inertial dampener mode change to 'combat' succeeded
 [ OK ] GRAVITATIONAL STABILIZER ADJUSTED
 [ OK ] Warp Intake Manifold Cooldown engaged
+[ OK ] TARGETING POD COMM UPLINK: ONLINE
 
-[ WARN ] JAM PROCESS TERMINATED WITH ERROR EXIT CODE 1; 'SUBMISSION STATUS: INCOMPLETE'"
+[ WARN ] JAM PROCESS TERMINATED WITH ERROR EXIT CODE 1; 'SUBMISSION STATUS: INCOMPLETE'
+[ ERR ] Stacktrace fetched to MFD "
 
-[node name="Right" type="Panel" parent="Panel/Control/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/Control/HBoxContainer/Right"]
+[node name="Button" type="Button" parent="Panel3"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Button" type="Button" parent="Panel/Control/HBoxContainer/Right/VBoxContainer"]
-layout_mode = 2
+offset_left = 866.0
+offset_top = 115.0
+offset_right = 909.0
+offset_bottom = 159.0
 text = "Host"
 
-[node name="Button2" type="Button" parent="Panel/Control/HBoxContainer/Right/VBoxContainer"]
-layout_mode = 2
+[node name="Button2" type="Button" parent="Panel3"]
+layout_mode = 0
+offset_left = 876.0
+offset_top = 179.0
+offset_right = 919.0
+offset_bottom = 223.0
 text = "Join"
 
-[node name="Placeholder" type="Sprite2D" parent="."]
-position = Vector2(785, 389)
-scale = Vector2(0.55973023, 0.59779954)
+[node name="Button3" type="Button" parent="Panel3"]
+layout_mode = 0
+offset_left = 867.0
+offset_top = 252.0
+offset_right = 936.0
+offset_bottom = 296.0
+text = "INFO"
+
+[node name="Button4" type="Button" parent="Panel3"]
+layout_mode = 0
+offset_left = 848.0
+offset_top = 350.0
+offset_right = 917.0
+offset_bottom = 394.0
+text = "[!] EJECT"
+
+[node name="Button5" type="Button" parent="Panel3"]
+layout_mode = 0
+offset_left = 942.0
+offset_top = 294.0
+offset_right = 1011.0
+offset_bottom = 338.0
+text = "CONF"
+
+[node name="Panel2" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 106.0
+offset_top = 51.000004
+offset_right = 106.0
+offset_bottom = 51.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8403049, 0.8403049)
+theme = ExtResource("1_j2igt")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 634.0
+offset_right = 274.0
+offset_bottom = 634.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -1.5707964
+theme_override_fonts/normal_font = ExtResource("3_oua23")
+theme_override_font_sizes/normal_font_size = 30
+text = "MISSION  OBJECTIVE  UPDATED"
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Panel2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 455.0
+offset_top = 588.0
+offset_right = 699.0
+offset_bottom = 588.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 25
+text = "OPFOR SIGNAL SCRAMBLING DETECTED. SENSOR RENDERED INCOMPLETE  - COMPLEMENTARY BAND SWEEP MUTEX RECOMMENDED 
+>> CALLOUT INCOMING HOSTILES TO WINGMAN. THEY ARE IMMUNE TO YOU AND INVISIBLE TO HIM <<
+CODE: ARRANGE. COOrdinate.  NEUTRALIZE."
+
+[node name="Button" type="Button" parent="Panel2"]
+layout_mode = 0
+offset_left = 934.18475
+offset_top = 669.9949
+offset_right = 1187.1848
+offset_bottom = 753.9949
+theme_override_font_sizes/font_size = 75
+text = "   >>ACK<<   "
+
+[node name="OpsecUndSo" type="Sprite2D" parent="Panel2"]
+position = Vector2(588, 350)
+scale = Vector2(0.45610672, 0.45610672)
+texture = ExtResource("3_l6gtq")
+
+[node name="Panel4" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 106.0
+offset_top = 51.000004
+offset_right = 106.0
+offset_bottom = 51.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8403049, 0.8403049)
+theme = ExtResource("1_j2igt")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 634.0
+offset_right = 274.0
+offset_bottom = 634.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -1.5707964
+theme_override_fonts/normal_font = ExtResource("3_oua23")
+theme_override_font_sizes/normal_font_size = 30
+text = "PILOT  PREFERENCES"
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Panel4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 354.63315
+offset_top = 240.38889
+offset_right = 598.6332
+offset_bottom = 240.38892
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(9.197826, 2.101964)
+theme_override_font_sizes/normal_font_size = 25
+text = "NAME?
+COLOR?"
+
+[node name="Button" type="Button" parent="Panel4"]
+layout_mode = 0
+offset_left = 934.18475
+offset_top = 669.9949
+offset_right = 1187.1848
+offset_bottom = 753.9949
+theme_override_font_sizes/font_size = 75
+text = "   >>ACK<<   "
+
+[node name="Placeholder" type="Sprite2D" parent="Panel4"]
+position = Vector2(590.26196, 502.19867)
+scale = Vector2(1.6113886, 0.6932225)
 texture = ExtResource("2_e87qj")
+
+[connection signal="pressed" from="Panel2/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Panel4/Button" to="." method="_on_button_pressed"]
