@@ -4,7 +4,7 @@ var health = 100
 var typeId: int; # 1 -> Seen by Host/Shot by Client, 2 -> Seen by Client/Shot by Host
 
 @onready var player_shape_cast: ShapeCast3D = $PlayerShapeCast
-@onready var guns: Node3D = $Visuals/Guns
+@onready var guns: Node3D = $Guns
 @onready var gun_cooldown_timer = $GunCooldown
 
 @export var model_container: Node3D
@@ -17,12 +17,11 @@ var typeId: int; # 1 -> Seen by Host/Shot by Client, 2 -> Seen by Client/Shot by
 @export_group("Visual Banking")
 @export var max_bank_angle := 70.0
 @export var bank_smoothness := 5.0 
-@export var max_pitch_angle := 45.0 
+@export var max_pitch_angle := 75.0 
 
 @export_group("Combat Settings")
-@export var ATTACK_RANGE = 40.0
-@export var AVOID_RANGE = 5.0
-@export var DETECTION_RANGE = 50.0
+@export var ATTACK_RANGE = 50.0
+@export var AVOID_RANGE = 20.0
 
 @export_group("Obstacle Avoidance")
 @export var OBSTACLE_DETECT_DISTANCE = 70.0 # How far ahead are obstacles detected
@@ -35,6 +34,9 @@ var typeId: int; # 1 -> Seen by Host/Shot by Client, 2 -> Seen by Client/Shot by
 @export_group("Path Settings")
 @export var PATROL_PATH_GROUP_NAME = "PatrolPaths"
 @export var PLAYERS_GROUP_NAME = "Players"
+@export var type1:Color
+@export var type2:Color
+@export var ship:Node3D
 
 # State Machine
 enum { PATROLLING, CHASING, ATTACKING }
@@ -86,12 +88,15 @@ func setup_enemy_type(id: int):
 			set_collision_mask_value(1, true)
 			set_collision_mask_value(4, true)
 			set_collision_mask_value(5, true)
+			ship.get_child(0).mesh.surface_get_material(1).albedo_color=type1
+			
 		2:
 			# Layer 3 | Mask: 1, 4, 5
 			set_collision_layer_value(3, true)
 			set_collision_mask_value(1, true)
 			set_collision_mask_value(4, true)
 			set_collision_mask_value(5, true)
+			ship.get_child(0).mesh.surface_get_material(1).albedo_color=type2
 		_:
 			push_error("Unknown enemy type: %d" % id)
 			
@@ -153,7 +158,6 @@ func patrol(delta: float) -> void:
 	move_in_direction(final_direction, delta)
 	
 	
-
 func chase_player(delta: float) -> void:
 	if not target_player or not is_instance_valid(target_player):
 		current_state = PATROLLING
@@ -248,7 +252,7 @@ func check_asteroid_ray(from: Vector3, direction: Vector3, distance: float) -> b
 	var wing_offset = BODY_WIDTH / 2.0
 	var height_offset = BODY_HEIGHT / 2.0
 	
-	# 9 Test-Punkte: Center + 8 Ecken/Kanten
+	# 9 Test-Points: Center + 8 Edges/Nodes
 	var test_points = [
 		from,                                              # Center
 		from + right * wing_offset,                        # Rechts
@@ -275,7 +279,7 @@ func check_asteroid_ray(from: Vector3, direction: Vector3, distance: float) -> b
 
 func check_enemy_ray(from: Vector3, direction: Vector3, distance: float) -> bool:
 	"""
-	Prüft mit 5 Rays ob andere Enemies im Weg sind
+	Checks with five rays if enemys are in the way
 	"""
 	var space_state = get_world_3d().direct_space_state
 	
@@ -303,11 +307,7 @@ func check_enemy_ray(from: Vector3, direction: Vector3, distance: float) -> bool
 	
 	return true
 
-# Hilfsfunktion (NEU)
 func _single_ray_check(space_state: PhysicsDirectSpaceState3D, from: Vector3, direction: Vector3, distance: float, mask: int) -> bool:
-	"""
-	Schießt einen einzelnen Ray
-	"""
 	var query = PhysicsRayQueryParameters3D.create(
 		from,
 		from + direction.normalized() * distance
@@ -340,40 +340,37 @@ func rotate_towards(direction: Vector3, delta: float) -> void:
 	
 	var normalized_direction = direction.normalized()
 	
-	# Berechne Ziel-Rotation direkt mit look_at (sicherer als Basis.looking_at)
-	var temp_transform = global_transform
-	temp_transform = temp_transform.looking_at(global_position + normalized_direction, Vector3.UP)
-	var target_basis = temp_transform.basis.orthonormalized()
+	var local_target_dir = global_transform.basis.inverse() * normalized_direction
+	var target_bank = -local_target_dir.x * max_bank_angle
+	var target_pitch = local_target_dir.y * max_pitch_angle 
 	
-	# Banking und Pitch für Visuals
-	var current_forward = -basis.z.normalized()
-	var rotation_axis = current_forward.cross(normalized_direction)
-	
-	var bank_amount = 0.0
-	if rotation_axis.length_squared() > 0.001:
-		var turn_rate = rotation_axis.length()
-		bank_amount = rotation_axis.y * max_bank_angle * turn_rate
-		bank_amount = clampf(bank_amount, -max_bank_angle, max_bank_angle)
-	
-	var vertical_direction = normalized_direction.y
-	var normalized_pitch = clampf(vertical_direction, -1.0, 1.0)
-	var eased_pitch = sign(normalized_pitch) * sqrt(abs(normalized_pitch))
-	var pitch_amount = eased_pitch * max_pitch_angle * 0.6
+	target_bank = clampf(target_bank, -max_bank_angle, max_bank_angle)
+	target_pitch = clampf(target_pitch, -max_pitch_angle, max_pitch_angle)
 	
 	if model_container:
-		model_container.rotation.z = lerp(model_container.rotation.z, deg_to_rad(bank_amount), delta * bank_smoothness)
-		model_container.rotation.x = lerp(model_container.rotation.x, deg_to_rad(pitch_amount), delta * bank_smoothness)
+		model_container.rotation.z = lerp(model_container.rotation.z, deg_to_rad(target_bank), delta * bank_smoothness)
+		model_container.rotation.x = lerp(model_container.rotation.x, deg_to_rad(target_pitch), delta * bank_smoothness)
 	
-	# Sichere Rotation mit orthonormalized basis
-	var current_basis = basis.orthonormalized()
-	basis = current_basis.slerp(target_basis, ROTATION_SPEED * delta)
+	var target_forward = -normalized_direction
+	
+	var world_up = Vector3.UP
+	# Anti-Gimbal-Lock Check
+	if abs(target_forward.dot(world_up)) > 0.99:
+		world_up = Vector3.BACK 
+
+	var target_right = world_up.cross(target_forward).normalized()
+	var target_up = target_forward.cross(target_right).normalized()
+	
+	var target_basis = Basis(target_right, target_up, target_forward).orthonormalized()
+	
+	basis = basis.slerp(target_basis, ROTATION_SPEED * delta).orthonormalized()
 	
 func is_player_in_sight() -> bool:
 	player_shape_cast.force_shapecast_update()
 	return player_shape_cast.is_colliding()
 
 func _on_detection_area_body_entered(body: Node3D) -> void:
-	print("Something entered detection: ", body.name, " Groups: ", body.get_groups())
+	#print("Something entered detection: ", body.name, " Groups: ", body.get_groups())
 	if current_state == PATROLLING and body.is_in_group(PLAYERS_GROUP_NAME):
 		target_player = body
 		current_state = CHASING
@@ -387,7 +384,7 @@ func _on_detection_area_body_exited(body: Node3D) -> void:
 		
 
 func shoot_gun() -> void:
-	if has_node("Visuals/Guns") and is_player_in_sight():
+	if has_node("Guns") and is_player_in_sight():
 		
 		if not gun_cooldown_timer.is_stopped():
 			# cooldown timer has not expired yet
@@ -413,8 +410,11 @@ func take_damage(damage_amount):
 	if health <= 0:
 		ScoreManager.add_score(1)
 		print("Taking Damage")
+		#TODO: Animation + Timer
 		queue_free()
 
 
 func _on_collision_entered(body: Node3D) -> void:
-	take_damage(health + 1)
+	print("Collided with obstacle %s" % body.name)
+	health = 0
+	queue_free()

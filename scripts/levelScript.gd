@@ -44,25 +44,30 @@ func spawn_enemy():
 		# Only host may spawn enemies
 		return;
 		
-	if $Enemies.get_child_count() >= max_enemy_count:
+	var child_count = $Enemies.get_child_count();
+		
+	if child_count >= max_enemy_count:
 		return;
 		
-	print("Spawn enemy number %s of max. %s" % [$Enemies.get_child_count(), max_enemy_count])
+	print("Spawn enemy number %s of max. %s" % [child_count + 1, max_enemy_count])
 		
 	var route_data = $PatrolRouteManager.get_random_route()
 	var enemy_instance = enemy_scene.instantiate();
 	enemy_instance.name = "Enemy_%d%d" % [Time.get_ticks_usec(), randi()]
-	$Enemies.add_child(enemy_instance)
 	enemy_instance.set_multiplayer_authority(1)
 	
+	var enemy_type_id: int = (child_count % 2) + 1
+	enemy_instance.initialize(enemy_type_id, route_data["points"])
 	
-	enemy_instance.initialize(1, route_data["points"])
+	$Enemies.add_child(enemy_instance)
+	
 func _on_enemy_spawn_timer_timeout() -> void:
 	spawn_enemy()
 
 func on_game_over():
-	#TODO: maybe not the best decision will see later if animationPlayer gets fucked
+	# TODO: maybe not the best decision will see later if animationPlayer gets fucked
 	process_mode = Node.PROCESS_MODE_DISABLED
+	
 	if not multiplayer.is_server():
 		return
 	

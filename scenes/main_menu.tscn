@@ -93,6 +93,7 @@ script/source = "extends Camera2D
 class_name CameraController
 signal zoom_in
 
+@export var container: Node = null
 @export var move_speed_factor: float = 1.2
 @export var zoom_speed_factor: float = 1
 @onready var screen_center: Vector2 = get_viewport().get_visible_rect().size / 2
@@ -149,7 +150,21 @@ func _on_control_zoomout() -> void:
 	$AnimationPlayer.play(\"zoomback\")
 
 func change_scene_usw():
-	get_tree().change_scene_to_file(\"res://scenes/LevelScene.tscn\")
+	if container.iJoinedNotHosted:
+		NetworkManager.join_game(\"192.168.1.141\")
+		return
+	
+	NetworkManager.host_game()
+	ScoreManager.current_team_name = container.teamname
+	# TODO container.hexkot
+	# container.hexkot_secondary
+	
+	#TODO - add in correct place:
+	#func game_over():
+	#	if multiplayer.is_server():
+	#	ScoreManager.save_current_run()
+	
+	
 "
 
 [sub_resource type="Animation" id="Animation_8ln24"]
@@ -327,10 +342,10 @@ tracks/3/path = NodePath("../../BG/BGAfter:scale")
 tracks/3/interp = 2
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(4.6, 6.6),
-"transitions": PackedFloat32Array(1, 3.3635933),
+"times": PackedFloat32Array(2.6666667, 3.88, 5.7333336),
+"transitions": PackedFloat32Array(1, 1, 3.3635933),
 "update": 0,
-"values": [Vector2(0.80376893, 0.80376893), Vector2(1.159, 1.159)]
+"values": [Vector2(0.80376893, 0.80376893), Vector2(0.8092198, 0.8092198), Vector2(1.159, 1.159)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -339,7 +354,7 @@ tracks/4/path = NodePath("../../FADETOWHITE:modulate")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(4.8666663, 6.4666667),
+"times": PackedFloat32Array(3.9999998, 5.6000004),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
@@ -363,7 +378,7 @@ tracks/6/path = NodePath("../../FADETOWHITE:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(2.9333339, 4.6),
+"times": PackedFloat32Array(2.9333339, 3.7333333),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -375,7 +390,7 @@ tracks/7/path = NodePath(".")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
-"times": PackedFloat32Array(6.6333327),
+"times": PackedFloat32Array(5.7666664),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -468,9 +483,10 @@ render_target_update_mode = 4
 
 [node name="Node2D" type="Node2D" parent="."]
 
-[node name="Camera2D" type="Camera2D" parent="Node2D"]
+[node name="Camera2D" type="Camera2D" parent="Node2D" node_paths=PackedStringArray("container")]
 position = Vector2(572, 465.665)
 script = SubResource("GDScript_l6cm7")
+container = NodePath("../../FG/SubViewport/Control/HOSTINGASHOST/START")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Node2D/Camera2D"]
 libraries = {
@@ -484,3 +500,5 @@ texture = SubResource("GradientTexture2D_oa1go")
 
 [connection signal="zoomout" from="FG/SubViewport/Control" to="Node2D/Camera2D" method="_on_control_zoomout"]
 [connection signal="zoom_in" from="Node2D/Camera2D" to="FG/SubViewport/Control" method="_on_zoomin"]
+
+[editable path="FG/SubViewport/Control"]

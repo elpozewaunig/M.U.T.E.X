@@ -18,6 +18,13 @@ extends SpringArm3D
  
 @export_group("player")
 @export var player:CharacterBody3D
+
+@export_group("HUD")
+@export var point_display: Node3D
+@export var circle_hud: Node3D
+@export var pitch_hud: Node3D
+@export var speed_bar: Node3D
+
 var maxSpeed:float=100
 var smooth_factor: float = 15.0 
 # STATE
@@ -28,11 +35,14 @@ var _is_using_mouse := false
 # THE DEFAULT ("HOME") POSITION
 var _default_pitch := 0.0
 var _default_yaw := 0.0
+var _default_spring_length
+var shortened_spring_length = 14
 
 func _ready():
 	add_excluded_object(get_parent().get_rid())
 	_default_pitch = rotation_degrees.x
 	_default_yaw = rotation_degrees.y
+	_default_spring_length = spring_length
 	
 	_current_pitch = _default_pitch
 	_current_yaw = _default_yaw
@@ -73,12 +83,21 @@ func _process(delta):
 		_current_yaw = lerp(_current_yaw, _default_yaw, return_speed * delta)
 
 	if (look_back):
-		rotation_degrees.x = 0
+		rotation_degrees.x = -5
 		rotation_degrees.y = 180
-		
+		spring_length = shortened_spring_length
+		point_display.hide()
+		circle_hud.hide()
+		pitch_hud.hide()
+		speed_bar.hide()
 	else:
 		rotation_degrees.x = _current_pitch
 		rotation_degrees.y = _current_yaw
+		spring_length = _default_spring_length
+		point_display.show()
+		circle_hud.show()
+		pitch_hud.show()
+		speed_bar.show()
 	if not player or not camera:
 		return
 	var speed = player.velocity.length()

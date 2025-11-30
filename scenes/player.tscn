@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://c111b6l8it2x6"]
+[gd_scene load_steps=28 format=3 uid="uid://c111b6l8it2x6"]
 
 [ext_resource type="Script" uid="uid://cc6g7dopbnu7h" path="res://scripts/Player.gd" id="1_qhqgy"]
 [ext_resource type="Script" uid="uid://b4rer4p7cpwlv" path="res://scripts/cameraController.gd" id="3_tuyoq"]
@@ -8,7 +8,6 @@
 [ext_resource type="Script" uid="uid://c5nc1c4n64d8p" path="res://scenes/Thurstes.gd" id="4_y4r1p"]
 [ext_resource type="PackedScene" uid="uid://d2snjgmsw07qr" path="res://scenes/gun.tscn" id="5_qlg0r"]
 [ext_resource type="PackedScene" uid="uid://bdfw8wp21jlmh" path="res://scenes/thruster_exhaust.tscn" id="5_tuyoq"]
-[ext_resource type="Material" uid="uid://bm06tepcpvlcd" path="res://assets/models/thruster_exhaust/outline_shader.tres" id="6_ur7pv"]
 [ext_resource type="Texture2D" uid="uid://qymy4et4jfcg" path="res://assets/sprites/VerticleHUD.svg" id="7_fjrip"]
 [ext_resource type="Script" uid="uid://dwblcvei8080m" path="res://scenes/texture_rect.gd" id="8_smehm"]
 [ext_resource type="PackedScene" uid="uid://cduaufs6120d2" path="res://scenes/thruster_particles.tscn" id="11_d2wvv"]
@@ -38,6 +37,10 @@ properties/3/replication_mode = 1
 [sub_resource type="ViewportTexture" id="ViewportTexture_smehm"]
 viewport_path = NodePath("ModelContainer/HUD/SubViewport")
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4r5pv"]
+radius = 1.0
+height = 7.0
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8bjf3"]
 transparency = 1
 cull_mode = 2
@@ -63,10 +66,6 @@ viewport_path = NodePath("PointDisplay/SubViewport")
 radius = 0.675
 height = 7.5
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4r5pv"]
-radius = 1.0
-height = 7.0
-
 [node name="CharacterBody3D2" type="CharacterBody3D" node_paths=PackedStringArray("movement_controller", "camera_controller", "camera", "point_display", "circle_hud", "pitch_hud", "speed_bar") groups=["Players"]]
 collision_layer = 8
 collision_mask = 31
@@ -89,23 +88,27 @@ player = NodePath("..")
 model_container = NodePath("../ModelContainer")
 ship_model = NodePath("../ModelContainer/ShipModel/Spaceship_Player2")
 
-[node name="SpringArm3D" type="SpringArm3D" parent="." node_paths=PackedStringArray("camera", "player")]
+[node name="SpringArm3D" type="SpringArm3D" parent="." node_paths=PackedStringArray("camera", "player", "point_display", "circle_hud", "pitch_hud", "speed_bar")]
 transform = Transform3D(1, 0, 0, 0, 0.951267, 0.30837, 0, -0.30837, 0.951267, 0, 0, 0)
 spring_length = 14.0
 script = ExtResource("3_tuyoq")
 camera = NodePath("Camera3D")
 player = NodePath("..")
+point_display = NodePath("../PointDisplay")
+circle_hud = NodePath("../CircleHUD")
+pitch_hud = NodePath("../ModelContainer/HUD")
+speed_bar = NodePath("../SpeedBar")
 
 [node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
 
 [node name="Area3D" type="Area3D" parent="."]
 script = ExtResource("4_jej6c")
 
-[node name="CollisionShape3D3" type="CollisionShape3D" parent="." groups=["Players"]]
-transform = Transform3D(2.70113e-07, 0, 0.89754, 0, 0.528894, 0, 6.17946, 0, -3.92327e-08, 0, 0.038, -0.914)
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Area3D" groups=["Players"]]
+transform = Transform3D(3.086707e-07, 0, 0.89754, 0, 0.528894, 0, 7.061557, 0, -3.92327e-08, 0, 0.038, -0.914)
 shape = SubResource("CapsuleShape3D_tuyoq")
 
-[node name="ModelContainer" type="Node3D" parent="." node_paths=PackedStringArray("player", "thrusterMain", "thrusterLeft", "thrusterRight", "movement", "Ship", "Ship_Node", "particle")]
+[node name="ModelContainer" type="Node3D" parent="." node_paths=PackedStringArray("player", "thrusterMain", "thrusterLeft", "thrusterRight", "movement", "Ship_Node", "particle")]
 script = ExtResource("4_y4r1p")
 player = NodePath("..")
 thrusterMain = NodePath("ThrusterExhaust")
@@ -114,7 +117,6 @@ thrusterRight = NodePath("ThrusterExhaust3")
 movement = NodePath("../movementController")
 primary = Color(0.132026, 0.129026, 0.126453, 1)
 secondary = Color(0.702773, 0.115305, 2.88785e-07, 1)
-Ship = NodePath("ShipModel/Spaceship_Player/Ship A")
 Ship_Node = NodePath("ShipModel/Spaceship_Player2")
 particle = NodePath("ThrusterExhaust/particles")
 
@@ -150,15 +152,6 @@ transform = Transform3D(0.429815, -0.113931, 0.00128334, 0, 0.0102355, 0.212942,
 [node name="ShipModel" parent="ModelContainer" instance=ExtResource("4_qlg0r")]
 transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
 
-[node name="Ship A" parent="ModelContainer/ShipModel/Spaceship_Player" index="0"]
-material_overlay = ExtResource("6_ur7pv")
-
-[node name="RocketLauncher" parent="ModelContainer/ShipModel/Spaceship_Player" index="1"]
-transform = Transform3D(0.707106, -0.707106, 0.00174291, 0.707107, 0.707107, 5.82077e-11, -0.00123243, 0.00123243, 0.999999, -1.88606, 0.0916786, -0.626113)
-
-[node name="RocketLauncher2" parent="ModelContainer/ShipModel/Spaceship_Player" index="2"]
-transform = Transform3D(0.68764, -0.726035, 0.00491535, 0.72592, 0.687629, 0.0143379, -0.0137897, -0.00629114, 0.999885, 0.721545, 2.71879, -0.629959)
-
 [node name="LeftGun" parent="ModelContainer" instance=ExtResource("5_qlg0r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.47845, 0.426927, -0.531486)
 
@@ -182,6 +175,10 @@ shape = SubResource("CapsuleShape3D_tuyoq")
 [node name="CollisionShape3D4" type="CollisionShape3D" parent="ModelContainer/Area3D"]
 transform = Transform3D(5.95371, 0, 5.05552e-08, 0, 0.279729, 0, 1.53151e-06, 0, 1.3531, -0.07686, 0.058098, 1.39981)
 shape = SubResource("CapsuleShape3D_tuyoq")
+
+[node name="ShipWingsCollisionShape" type="CollisionShape3D" parent="ModelContainer/Area3D"]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0.19487417, 2.0840282)
+shape = SubResource("CapsuleShape3D_4r5pv")
 
 [node name="shield_scannerparticle_try" type="CPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.953664, 0.300872, 0, -0.300872, -0.953664, -0.0405608, -0.55562, 1.41512)
@@ -270,14 +267,9 @@ texture = SubResource("ViewportTexture_qfm1y")
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 4.850299e-08, -0.6157321)
 shape = SubResource("CapsuleShape3D_fulsm")
 
-[node name="ShipWingsCollisionShape" type="CollisionShape3D" parent="."]
-transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0.19487417, 2.0840282)
-shape = SubResource("CapsuleShape3D_4r5pv")
-
 [connection signal="max_Speed" from="movementController" to="SpringArm3D" method="_on_movement_controller_max_speed"]
 [connection signal="max_Speed" from="movementController" to="ModelContainer" method="_on_movement_controller_max_speed"]
 [connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]
 [connection signal="body_entered" from="ModelContainer/Area3D" to="Area3D" method="_on_area_3d_body_entered"]
 
 [editable path="ModelContainer/ShipModel"]
-[editable path="ModelContainer/ShipModel/Spaceship_Player"]
