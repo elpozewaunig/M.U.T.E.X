@@ -1,47 +1,40 @@
 extends Node3D
 
 @onready var gun_ray = $RayCast3D
-
-# Ensure this matches your file path EXACTLY
+# Ensure this points to the new PHYSICS-ONLY missile (no sync node)
 var missile_scene = load("res://scenes/Missile.tscn")
 
 func _process(_delta):
-	# Input Guard: Only the local player can request a shot
+	# Input Guard
 	if not owner.is_multiplayer_authority():
 		return
 		
 	if Input.is_action_just_pressed("shoot"):
-		# Networking Check
-		if multiplayer.is_server():
-			spawn_missile()
-		else:
-			rpc_id(1, "spawn_missile")
+		request_fire()
+
+func request_fire():
+	var pos = gun_ray.global_position
+	var rot = gun_ray.global_transform.basis
+	
+	if multiplayer.is_server():
+		# Server: Broadcast directly
+		rpc("fire_event", pos, rot, true)
+	else:
+		# I am Client: Ask Server to broadcast
+		rpc_id(1, "request_fire_from_client", pos, rot, false)
+
 
 @rpc("any_peer", "call_local")
-func spawn_missile():
-	# Security: Only Server spawns
-	if not multiplayer.is_server(): return
+func request_fire_from_client(pos, rot, is_host):
+	if multiplayer.is_server():
+		rpc("fire_event", pos, rot, is_host)
 
-	# 1. Instantiate
+
+@rpc("any_peer", "call_local")
+func fire_event(pos, rot, is_host):
 	var missile = missile_scene.instantiate()
+	get_node("/root/LevelScene/Bullets").add_child(missile)
 	
-	# 2. Force Unique Name (PREVENTS "Node Not Found" ERRORS)
-	missile.name = "M_%d" % randi()
-	
-	# 3. Find Container
-	var container = get_node("/root/LevelScene/Bullets")
-	if not container:
-		printerr("Gun Error: No 'Bullets' node found in LevelScene")
-		return
-
-	# 4. Add Child (Networked)
-	container.add_child(missile, true)
-	
-	# 5. Position & Rotation
-	missile.global_position = gun_ray.global_position
-	missile.global_transform.basis = gun_ray.global_transform.basis
-	
-	# 6. Setup Logic
-	# owner.name == "1" checks if the shooter is the Host
-	if missile.has_method("setup_server_logic"):
-		missile.setup_server_logic(owner.name == "1", owner)
+	# Setup physics immediately
+	if missile.has_method("setup_missile"):
+		missile.setup_missile(pos, rot, is_host)

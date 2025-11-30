@@ -37,8 +37,6 @@ func _ready():
 	_current_pitch = _default_pitch
 	_current_yaw = _default_yaw
 	
-		
-	
 
 func _input(event):
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):

@@ -22,6 +22,9 @@ var Ship_secondary:StandardMaterial3D
 @export var particle:Node3D
 
 func _ready() -> void:
+	recolor()
+	pass
+func recolor()-> void: 
 	Ship = Ship_Node.get_child(0)
 	Ship_primary=Ship.mesh.surface_get_material(1)
 	Ship_secondary=Ship.mesh.surface_get_material(2)
@@ -29,8 +32,6 @@ func _ready() -> void:
 	Ship_secondary.albedo_color=secondary
 	particle.get_child(0).mesh.material.emission=secondary
 	thrusterMain.get_child(0).get_child(0).material_override.emission=secondary
-	pass
-
 func _physics_process(delta: float) -> void:
 	if not player or not thrusterMain:
 		return
