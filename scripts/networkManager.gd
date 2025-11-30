@@ -6,6 +6,9 @@ const DEFAULT_SERVER_IP = "192.168.1.141" # Localhost
 
 const LEVEL_SCENE_PATH = "res://scenes/LevelScene.tscn" 
 
+var primary:Color 
+var secondary:Color
+
 # Signals to let the GUI know what's happening
 signal player_connected(peer_id, player_info)
 signal player_disconnected(peer_id)

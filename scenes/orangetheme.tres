@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://540k58tsq54u"]
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://dy7etv7o0neir"]
 
 [ext_resource type="FontFile" uid="uid://bm8mst0c7qrjw" path="res://assets/font/condenbitmap/CondenBitmap.otf" id="1_lct0h"]
 
@@ -7,7 +7,7 @@ content_margin_left = 0.0
 content_margin_top = 0.0
 content_margin_right = 0.0
 content_margin_bottom = 0.0
-bg_color = Color(0.78039217, 0.42745098, 0.18431373, 1)
+bg_color = Color(0.780392, 0.427451, 0.184314, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3

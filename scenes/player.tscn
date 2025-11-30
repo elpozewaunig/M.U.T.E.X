@@ -105,7 +105,7 @@ speed_bar = NodePath("../SpeedBar")
 script = ExtResource("4_jej6c")
 
 [node name="CollisionShape3D3" type="CollisionShape3D" parent="Area3D" groups=["Players"]]
-transform = Transform3D(3.086707e-07, 0, 0.89754, 0, 0.528894, 0, 7.061557, 0, -3.92327e-08, 0, 0.038, -0.914)
+transform = Transform3D(3.08671e-07, 0, 0.89754, 0, 0.528894, 0, 7.06156, 0, -3.92327e-08, 0, 0.038, -0.914)
 shape = SubResource("CapsuleShape3D_tuyoq")
 
 [node name="ModelContainer" type="Node3D" parent="." node_paths=PackedStringArray("player", "thrusterMain", "thrusterLeft", "thrusterRight", "movement", "Ship_Node", "particle")]
@@ -177,7 +177,7 @@ transform = Transform3D(5.95371, 0, 5.05552e-08, 0, 0.279729, 0, 1.53151e-06, 0,
 shape = SubResource("CapsuleShape3D_tuyoq")
 
 [node name="ShipWingsCollisionShape" type="CollisionShape3D" parent="ModelContainer/Area3D"]
-transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0.19487417, 2.0840282)
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0.194874, 2.08403)
 shape = SubResource("CapsuleShape3D_4r5pv")
 
 [node name="shield_scannerparticle_try" type="CPUParticles3D" parent="."]
@@ -207,7 +207,7 @@ scale_amount_min = 9.58
 scale_amount_max = 9.58
 
 [node name="CircleHUD" type="Node3D" parent="."]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 21.262215, -29.009012)
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 21.2622, -29.009)
 
 [node name="SubViewport" type="SubViewport" parent="CircleHUD"]
 transparent_bg = true
@@ -223,11 +223,11 @@ script = ExtResource("14_f1ej7")
 player = NodePath("../../..")
 
 [node name="Sprite3D" type="Sprite3D" parent="CircleHUD"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.568113, 5.4184866)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.56811, 5.41849)
 texture = SubResource("ViewportTexture_oprun")
 
 [node name="SpeedBar" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.838863, 0, -6.10254)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.83886, 0, -6.10254)
 
 [node name="SubViewport" type="SubViewport" parent="SpeedBar"]
 transparent_bg = true
@@ -243,7 +243,7 @@ script = ExtResource("16_qfm1y")
 player = NodePath("../../..")
 
 [node name="Sprite3D" type="Sprite3D" parent="SpeedBar"]
-transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 1.2976251, 0, 0)
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 1.29763, 0, 0)
 texture = SubResource("ViewportTexture_fulsm")
 
 [node name="PointDisplay" type="Node3D" parent="."]
@@ -254,17 +254,17 @@ transparent_bg = true
 [node name="PointDisplay" type="Label" parent="PointDisplay/SubViewport"]
 offset_right = 40.0
 offset_bottom = 23.0
-theme_override_colors/font_color = Color(0.34901962, 0.95686275, 0.37254903, 1)
+theme_override_colors/font_color = Color(0.34902, 0.956863, 0.372549, 1)
 theme_override_font_sizes/font_size = 50
 text = "Points: 0"
 script = ExtResource("17_qfm1y")
 
 [node name="Sprite3D" type="Sprite3D" parent="PointDisplay"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.7568293, 0, -6.060863)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.75683, 0, -6.06086)
 texture = SubResource("ViewportTexture_qfm1y")
 
 [node name="ShipBodyCollisionShape" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 4.850299e-08, -0.6157321)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 4.8503e-08, -0.615732)
 shape = SubResource("CapsuleShape3D_fulsm")
 
 [connection signal="takeDamageSignal" from="." to="Area3D" method="_on_character_body_3d_2_take_damage_signal"]
