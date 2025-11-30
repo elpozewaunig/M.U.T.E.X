@@ -5,6 +5,10 @@ extends CharacterBody3D
 @export var camera_controller: Node3D
 @export var camera: Camera3D
 
+@export var primary_color: Color
+@export var secundary_color: Color
+
+
 @export_group("Hud elements")
 @export var point_display: Node3D
 @export var circle_hud: Node3D
@@ -51,3 +55,7 @@ func _ready():
 
 func take_damage(damage_amount):
 	takeDamageSignal.emit(damage_amount)
+	
+func setup_colors(primary: Color, secondary: Color):
+	primary_color = primary
+	secundary_color = secondary
