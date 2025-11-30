@@ -165,12 +165,14 @@ script/source = "extends Button
 
 var teamname = \"IJoined\"
 var hexkot = \"#123123\"
+var hexkot_secondary = \"#123123\"
 var iJoinedNotHosted = true
 
 func _process(_delta: float) -> void:
 	if($\"../LineEdit\".text != \"\") and regexvalid():
 		teamname = $\"../LineEdit\".text
 		hexkot = normalize_hex($\"../LineEdit2\".text)
+		hexkot_secondary = normalize_hex($\"../LineEdit3\".text)
 		iJoinedNotHosted = false
 		disabled = false
 	else:
@@ -178,7 +180,8 @@ func _process(_delta: float) -> void:
 		iJoinedNotHosted = true
 func regexvalid() -> bool:
 	var norm = normalize_hex($\"../LineEdit2\".text)
-	if norm!=\"\":
+	var norm2 = normalize_hex($\"../LineEdit3\".text)
+	if norm!=\"\" and norm2!=\"\":
 		return true
 	return false
 		
@@ -192,7 +195,7 @@ func normalize_hex(input: String) -> String:
 
 	# Check if it matches a valid hex color pattern (#RGB, #RRGGBB, #RRGGBBAA)
 	var hex_regex := RegEx.new()
-	hex_regex.compile(\"^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$\")
+	hex_regex.compile(\"^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$\")
 
 	if hex_regex.search(michael):
 		return michael  # valid hex code
@@ -444,10 +447,29 @@ offset_right = 448.68762
 offset_bottom = 541.4702
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 30
-text = "OPFOR SIGNAL SCRAMBLING DETECTED. SENSOR RENDERED INCOMPLETE  - COMPLEMENTARY BAND SWEEP MUTEX RECOMMENDED 
->> CALLOUT INCOMING HOSTILES TO WINGMAN. THEY ARE IMMUNE TO YOU AND INVISIBLE TO HIM <<
-CODE: ARRANGE. COOrdinate.  NEUTRALIZE."
+theme_override_font_sizes/normal_font_size = 45
+text = "OPFOR SIGNAL SCRAMBLING DETECTED. SENSOR RENDERED INCOMPLETE. 
+COMPLEMENTARY BAND SWEEP MUTEX RECOMMENDED.
+>> CALLOUT INCOMING HOSTILES TO WINGMAN.
+ THEY ARE IMMUNE TO YOU AND INVISIBLE TO HIM <<"
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="Tutorial"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 973.4562
+offset_top = 533.1398
+offset_right = 1217.456
+offset_bottom = 533.1399
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 45
+text = "CODE: 
+ARRANGE. 
+COOrdinate. 
+
+NEUTRALIZE."
 
 [node name="ACKTutorialBTN" type="Button" parent="Tutorial"]
 layout_mode = 0
@@ -656,6 +678,7 @@ theme_override_font_sizes/font_size = 75
 text = "<< return >>"
 
 [node name="HOSTING" type="Panel" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -835,27 +858,27 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 154.70578
-offset_top = 415.32544
+offset_left = 154.70575
+offset_top = 397.4748
 offset_right = 398.7058
-offset_bottom = 415.32532
+offset_bottom = 397.4746
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.75156784, 0.75156784)
 theme_override_font_sizes/normal_font_size = 70
-text = "TEAM COLOR (HEX):"
+text = "TEAM COLOR PRIMARY:"
 
 [node name="LineEdit2" type="LineEdit" parent="HOSTINGASHOST"]
 custom_minimum_size = Vector2(384.705, 79.67)
 layout_mode = 0
-offset_left = 154.70578
-offset_top = 480.7779
+offset_left = 154.70575
+offset_top = 462.92722
 offset_right = 539.41077
-offset_bottom = 560.4479
+offset_bottom = 542.5972
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath("../LineEdit")
 focus_neighbor_right = NodePath(".")
-focus_neighbor_bottom = NodePath("../CANCELHH")
+focus_neighbor_bottom = NodePath("../LineEdit3")
 theme_override_fonts/font = ExtResource("5_lt044")
 text = "#0055ff"
 placeholder_text = "<ENTER HEX CODE>"
@@ -875,6 +898,36 @@ rotation = -1.5707964
 theme_override_fonts/normal_font = ExtResource("3_oua23")
 theme_override_font_sizes/normal_font_size = 30
 text = "PILOT  PREFERENCES"
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="HOSTINGASHOST"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 154.70575
+offset_top = 548.6104
+offset_right = 398.7058
+offset_bottom = 548.61035
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.75156784, 0.75156784)
+theme_override_font_sizes/normal_font_size = 70
+text = "TEAM COLOR SECONDARY:"
+
+[node name="LineEdit3" type="LineEdit" parent="HOSTINGASHOST"]
+custom_minimum_size = Vector2(384.705, 79.67)
+layout_mode = 0
+offset_left = 154.70575
+offset_top = 614.06287
+offset_right = 539.41077
+offset_bottom = 693.73285
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../LineEdit2")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../CANCELHH")
+theme_override_fonts/font = ExtResource("5_lt044")
+text = "#00ff55"
+placeholder_text = "<ENTER HEX CODE>"
 
 [connection signal="pressed" from="Menu/VBoxContainer/HostGameBTN" to="Tutorial" method="_on_host_game_btn_pressed"]
 [connection signal="pressed" from="Menu/VBoxContainer/CreditsBTN" to="Credits" method="_on_options_btn_pressed"]
