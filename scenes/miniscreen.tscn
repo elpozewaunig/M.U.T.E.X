@@ -1,10 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://dp3rvhbvdll7k"]
+[gd_scene load_steps=17 format=3 uid="uid://dp3rvhbvdll7k"]
 
 [ext_resource type="Script" uid="uid://ojikmh0bkwii" path="res://scenes/miniscreen_controller.gd" id="1_4qlu7"]
 [ext_resource type="Theme" uid="uid://540k58tsq54u" path="res://scenes/orangetheme.tres" id="1_j2igt"]
-[ext_resource type="Texture2D" uid="uid://mem4hsrigu8e" path="res://assets/font/placeholder.jpg" id="2_e87qj"]
 [ext_resource type="Texture2D" uid="uid://bwqjr8hrqdd33" path="res://assets/sprites/opsec und so.png" id="3_l6gtq"]
 [ext_resource type="FontFile" uid="uid://d304xnpnbruf4" path="res://assets/font/DSEG14-Classic/DSEG14Classic-Regular.ttf" id="3_oua23"]
+[ext_resource type="Texture2D" uid="uid://ch76tb3w6jhpw" path="res://assets/sprites/opsec und so_gruber.png" id="4_j7o8s"]
+[ext_resource type="FontFile" uid="uid://bbkwijog1qnxl" path="res://assets/font/DSEG14-Classic/DSEG14Classic-Regular.woff" id="5_lt044"]
 
 [sub_resource type="GDScript" id="GDScript_03b6j"]
 resource_name = "asdsadsadsadsadsads"
@@ -12,6 +13,10 @@ script/source = "extends Panel
 
 
 func _on_join_pressed() -> void:
+	show()
+
+
+func _on_start_pressed() -> void:
 	show()
 "
 
@@ -32,6 +37,10 @@ func _on_cancelhost_pressed() -> void:
 
 
 func _on_join_pressed() -> void:
+	hide()
+
+
+func _on_start_pressed() -> void:
 	hide()
 "
 
@@ -102,6 +111,7 @@ script/source = "extends Panel
 
 func _on_host_game_btn_pressed() -> void:
 	show()
+	$HIGHSCORE._refresh()
 	$CANCELHOST.grab_focus()
 
 func _on_cancelhost_pressed() -> void:
@@ -114,11 +124,21 @@ func _on_join_pressed() -> void:
 
 func _on_cancelhh_pressed() -> void:
 	show()
+	$HIGHSCORE._refresh()
 	$CANCELHOST.grab_focus()
 
 
 func _on_host_pressed() -> void:
 	hide()
+"
+
+[sub_resource type="GDScript" id="GDScript_ms7bd"]
+resource_name = "fetchhighscore"
+script/source = "extends RichTextLabel
+func _init() -> void:
+	_refresh()
+func _refresh():
+	text = str(ScoreManager.load_highscores()) #bismillah TODO?
 "
 
 [sub_resource type="GDScript" id="GDScript_hofui"]
@@ -133,24 +153,59 @@ func _on_cancelhost_pressed() -> void:
 func _on_host_pressed() -> void:
 	show()
 	$CANCELHH.grab_focus()
+
+
+func _on_start_pressed() -> void:
+	hide()
 "
 
-[sub_resource type="GDScript" id="GDScript_oua23"]
-resource_name = "makevisible"
-script/source = "extends Panel
+[sub_resource type="GDScript" id="GDScript_ib01u"]
+resource_name = "stoart"
+script/source = "extends Button
 
+var teamname = \"IJoined\"
+var hexkot = \"#123123\"
+var iJoinedNotHosted = true
 
-func _on_ack_tutorial_btn_pressed() -> void:
-	show()
+func _process(_delta: float) -> void:
+	if($\"../LineEdit\".text != \"\") and regexvalid():
+		teamname = $\"../LineEdit\".text
+		hexkot = normalize_hex($\"../LineEdit2\".text)
+		iJoinedNotHosted = false
+		disabled = false
+	else:
+		disabled = true
+		iJoinedNotHosted = true
+func regexvalid() -> bool:
+	var norm = normalize_hex($\"../LineEdit2\".text)
+	if norm!=\"\":
+		return true
+	return false
+		
+	
+func normalize_hex(input: String) -> String:
+	var michael := input.strip_edges()
+
+	# Prepend \"#\" if missing
+	if not michael.begins_with(\"#\"):
+		michael = \"#\" + michael
+
+	# Check if it matches a valid hex color pattern (#RGB, #RRGGBB, #RRGGBBAA)
+	var hex_regex := RegEx.new()
+	hex_regex.compile(\"^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})$\")
+
+	if hex_regex.search(michael):
+		return michael  # valid hex code
+	else:
+		return \"\"  # or handle invalid input however you want
 "
 
 [node name="Control" type="Control"]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 48.0
-offset_bottom = 352.0
+anchor_right = 1.042
+anchor_bottom = 1.5430001
+offset_right = -0.3840332
+offset_bottom = 0.1359253
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_4qlu7")
@@ -383,23 +438,23 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 455.0
-offset_top = 588.0
-offset_right = 699.0
-offset_bottom = 588.0
+offset_left = 204.6876
+offset_top = 541.47015
+offset_right = 448.68762
+offset_bottom = 541.4702
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 25
+theme_override_font_sizes/normal_font_size = 30
 text = "OPFOR SIGNAL SCRAMBLING DETECTED. SENSOR RENDERED INCOMPLETE  - COMPLEMENTARY BAND SWEEP MUTEX RECOMMENDED 
 >> CALLOUT INCOMING HOSTILES TO WINGMAN. THEY ARE IMMUNE TO YOU AND INVISIBLE TO HIM <<
 CODE: ARRANGE. COOrdinate.  NEUTRALIZE."
 
 [node name="ACKTutorialBTN" type="Button" parent="Tutorial"]
 layout_mode = 0
-offset_left = 708.0763
-offset_top = 655.71436
-offset_right = 961.07635
-offset_bottom = 739.71436
+offset_left = 134.475
+offset_top = 104.724
+offset_right = 387.47507
+offset_bottom = 188.724
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_right = NodePath(".")
@@ -410,7 +465,7 @@ text = "   >>ACK<<   "
 [node name="OpsecUndSo" type="Sprite2D" parent="Tutorial"]
 position = Vector2(588, 350)
 scale = Vector2(0.45610672, 0.45610672)
-texture = ExtResource("3_l6gtq")
+texture = ExtResource("4_j7o8s")
 
 [node name="Credits" type="Panel" parent="."]
 visible = false
@@ -601,7 +656,6 @@ theme_override_font_sizes/font_size = 75
 text = "<< return >>"
 
 [node name="HOSTING" type="Panel" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -622,9 +676,9 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 154.70575
-offset_top = 247.52917
+offset_top = 198.73737
 offset_right = 398.7058
-offset_bottom = 247.52905
+offset_bottom = 198.7373
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.75156784, 0.75156784)
@@ -647,9 +701,9 @@ text = "<< return >>"
 [node name="HOST" type="Button" parent="HOSTING"]
 layout_mode = 0
 offset_left = 134.47491
-offset_top = 398.6648
+offset_top = 264.1898
 offset_right = 387.47498
-offset_bottom = 482.6648
+offset_bottom = 348.1898
 focus_neighbor_left = NodePath("../JOIN")
 focus_neighbor_top = NodePath("../CANCELHOST")
 focus_neighbor_right = NodePath("../JOIN")
@@ -660,15 +714,48 @@ text = "HOST GAME"
 [node name="JOIN" type="Button" parent="HOSTING"]
 layout_mode = 0
 offset_left = 574.7914
-offset_top = 398.6648
+offset_top = 264.1898
 offset_right = 827.79144
-offset_bottom = 482.6648
+offset_bottom = 348.1898
 focus_neighbor_left = NodePath("../HOST")
 focus_neighbor_top = NodePath("../CANCELHOST")
 focus_neighbor_right = NodePath("../HOST")
 focus_neighbor_bottom = NodePath("../CANCELHOST")
 theme_override_font_sizes/font_size = 75
 text = "JOIN GAME"
+
+[node name="HIGHSCORE" type="RichTextLabel" parent="HOSTING"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 142.80531
+offset_top = 385.57434
+offset_right = 386.8053
+offset_bottom = 385.57422
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.75156784, 0.75156784)
+theme_override_font_sizes/normal_font_size = 70
+text = ":("
+script = SubResource("GDScript_ms7bd")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HOSTING"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 42.8416
+offset_top = 773.5287
+offset_right = 286.8413
+offset_bottom = 773.52856
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -1.5707964
+scale = Vector2(0.503559, 0.503559)
+theme_override_fonts/normal_font = ExtResource("3_oua23")
+theme_override_font_sizes/normal_font_size = 90
+text = "HIGH  SCORES"
 
 [node name="HOSTINGASHOST" type="Panel" parent="."]
 visible = false
@@ -699,7 +786,7 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.75156784, 0.75156784)
 theme_override_font_sizes/normal_font_size = 70
-text = "<Host Will Decide COLOR AND TEAM NAME>"
+text = "TEAM NAME:"
 
 [node name="CANCELHH" type="Button" parent="HOSTINGASHOST"]
 layout_mode = 0
@@ -708,84 +795,86 @@ offset_top = 104.72389
 offset_right = 387.47498
 offset_bottom = 188.72389
 focus_neighbor_left = NodePath(".")
-focus_neighbor_top = NodePath("../HOST")
+focus_neighbor_top = NodePath("../LineEdit2")
 focus_neighbor_right = NodePath(".")
-focus_neighbor_bottom = NodePath("../HOST")
+focus_neighbor_bottom = NodePath("../LineEdit")
 theme_override_font_sizes/font_size = 75
 text = "<< return >>"
 
-[node name="HOST" type="Button" parent="HOSTINGASHOST"]
+[node name="START" type="Button" parent="HOSTINGASHOST"]
 layout_mode = 0
-offset_left = 134.47491
-offset_top = 398.6648
-offset_right = 387.47498
-offset_bottom = 482.6648
+offset_left = 669.99493
+offset_top = 312.9816
+offset_right = 922.995
+offset_bottom = 396.9816
+focus_neighbor_left = NodePath("../LineEdit")
 focus_neighbor_top = NodePath("../CANCELHH")
+focus_neighbor_right = NodePath("../LineEdit")
 focus_neighbor_bottom = NodePath("../CANCELHH")
 theme_override_font_sizes/font_size = 75
+disabled = true
 text = "START!"
+script = SubResource("GDScript_ib01u")
 
-[node name="Customize" type="Panel" parent="."]
-visible = false
+[node name="LineEdit" type="LineEdit" parent="HOSTINGASHOST"]
+custom_minimum_size = Vector2(384.705, 79.67)
+layout_mode = 0
+offset_left = 154.70575
+offset_top = 312.98163
+offset_right = 539.41077
+offset_bottom = 392.6516
+focus_neighbor_left = NodePath("../START")
+focus_neighbor_top = NodePath("../CANCELHH")
+focus_neighbor_right = NodePath("../START")
+focus_neighbor_bottom = NodePath("../LineEdit2")
+theme_override_fonts/font = ExtResource("3_oua23")
+placeholder_text = "ENTER  NAME"
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="HOSTINGASHOST"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 106.0
-offset_top = 51.000004
-offset_right = 106.0
-offset_bottom = 51.0
+offset_left = 154.70578
+offset_top = 415.32544
+offset_right = 398.7058
+offset_bottom = 415.32532
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.8403049, 0.8403049)
-theme = ExtResource("1_j2igt")
-script = SubResource("GDScript_oua23")
+scale = Vector2(0.75156784, 0.75156784)
+theme_override_font_sizes/normal_font_size = 70
+text = "TEAM COLOR (HEX):"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Customize"]
+[node name="LineEdit2" type="LineEdit" parent="HOSTINGASHOST"]
+custom_minimum_size = Vector2(384.705, 79.67)
+layout_mode = 0
+offset_left = 154.70578
+offset_top = 480.7779
+offset_right = 539.41077
+offset_bottom = 560.4479
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../LineEdit")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../CANCELHH")
+theme_override_fonts/font = ExtResource("5_lt044")
+text = "#0055ff"
+placeholder_text = "<ENTER HEX CODE>"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HOSTINGASHOST"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 30.0
-offset_top = 634.0
-offset_right = 274.0
-offset_bottom = 634.0
+offset_left = 22.610834
+offset_top = 561.70087
+offset_right = 266.61084
+offset_bottom = 561.7009
 grow_horizontal = 2
 grow_vertical = 2
 rotation = -1.5707964
 theme_override_fonts/normal_font = ExtResource("3_oua23")
 theme_override_font_sizes/normal_font_size = 30
 text = "PILOT  PREFERENCES"
-
-[node name="RichTextLabel2" type="RichTextLabel" parent="Customize"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 354.63315
-offset_top = 240.38889
-offset_right = 598.6332
-offset_bottom = 240.38892
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(9.197826, 2.101964)
-theme_override_font_sizes/normal_font_size = 25
-text = "NAME?
-COLOR?"
-
-[node name="StartGameBTN" type="Button" parent="Customize"]
-layout_mode = 0
-offset_left = 934.18475
-offset_top = 669.9949
-offset_right = 1187.1848
-offset_bottom = 753.9949
-theme_override_font_sizes/font_size = 75
-text = "   >>ACK<<   "
-
-[node name="Placeholder" type="Sprite2D" parent="Customize"]
-position = Vector2(590.26196, 502.19867)
-scale = Vector2(1.6113886, 0.6932225)
-texture = ExtResource("2_e87qj")
 
 [connection signal="pressed" from="Menu/VBoxContainer/HostGameBTN" to="Tutorial" method="_on_host_game_btn_pressed"]
 [connection signal="pressed" from="Menu/VBoxContainer/CreditsBTN" to="Credits" method="_on_options_btn_pressed"]
@@ -806,4 +895,7 @@ texture = ExtResource("2_e87qj")
 [connection signal="pressed" from="HOSTING/JOIN" to="HOSTING" method="_on_join_pressed"]
 [connection signal="pressed" from="HOSTINGASHOST/CANCELHH" to="HOSTING" method="_on_cancelhh_pressed"]
 [connection signal="pressed" from="HOSTINGASHOST/CANCELHH" to="HOSTINGASHOST" method="_on_cancelhost_pressed"]
-[connection signal="pressed" from="Customize/StartGameBTN" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="HOSTINGASHOST/START" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="HOSTINGASHOST/START" to="PRESSTART" method="_on_start_pressed"]
+[connection signal="pressed" from="HOSTINGASHOST/START" to="Menu" method="_on_start_pressed"]
+[connection signal="pressed" from="HOSTINGASHOST/START" to="HOSTINGASHOST" method="_on_start_pressed"]

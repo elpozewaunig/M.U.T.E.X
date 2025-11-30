@@ -38,6 +38,32 @@ script = ExtResource("1_7p1mj")
 model_container = NodePath("Visuals")
 metadata/_edit_group_ = true
 
+[node name="Guns" type="Node3D" parent="."]
+
+[node name="EnemyGun" parent="Guns" instance=ExtResource("3_5uy6h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.25, 0.7, 0.5)
+
+[node name="EnemyGun8" parent="Guns" instance=ExtResource("3_5uy6h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.25, 0.7, 0.5)
+
+[node name="EnemyGun7" parent="Guns" instance=ExtResource("3_5uy6h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.7, 0.5)
+
+[node name="EnemyGun6" parent="Guns" instance=ExtResource("3_5uy6h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.7, 0.5)
+
+[node name="EnemyGun5" parent="Guns" instance=ExtResource("3_5uy6h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.7, 0.5)
+
+[node name="EnemyGun4" parent="Guns" instance=ExtResource("3_5uy6h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 0.7, 0.5)
+
+[node name="EnemyGun3" parent="Guns" instance=ExtResource("3_5uy6h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.7, 0.5)
+
+[node name="EnemyGun2" parent="Guns" instance=ExtResource("3_5uy6h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, 0.7, 0.5)
+
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
@@ -70,32 +96,6 @@ transform = Transform3D(0.6, 0, 0, 0, -2.6226834e-08, 0.6, 0, -0.6, -2.6226834e-
 
 [node name="enemy" parent="Visuals" instance=ExtResource("2_5uy6h")]
 transform = Transform3D(-0.25, 0, -3.774895e-08, 0, 0.25, 0, 3.774895e-08, 0, -0.25, 0, 0, 0)
-
-[node name="Guns" type="Node3D" parent="Visuals"]
-
-[node name="EnemyGun" parent="Visuals/Guns" instance=ExtResource("3_5uy6h")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.25, 0.7, 0.5)
-
-[node name="EnemyGun8" parent="Visuals/Guns" instance=ExtResource("3_5uy6h")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.25, 0.7, 0.5)
-
-[node name="EnemyGun7" parent="Visuals/Guns" instance=ExtResource("3_5uy6h")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.7, 0.5)
-
-[node name="EnemyGun6" parent="Visuals/Guns" instance=ExtResource("3_5uy6h")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.7, 0.5)
-
-[node name="EnemyGun5" parent="Visuals/Guns" instance=ExtResource("3_5uy6h")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.7, 0.5)
-
-[node name="EnemyGun4" parent="Visuals/Guns" instance=ExtResource("3_5uy6h")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 0.7, 0.5)
-
-[node name="EnemyGun3" parent="Visuals/Guns" instance=ExtResource("3_5uy6h")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.7, 0.5)
-
-[node name="EnemyGun2" parent="Visuals/Guns" instance=ExtResource("3_5uy6h")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, 0.7, 0.5)
 
 [node name="VisibilityConstroller" type="Node3D" parent="." node_paths=PackedStringArray("visuals_node")]
 script = ExtResource("3_4ra3w")

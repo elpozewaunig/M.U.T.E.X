@@ -9,3 +9,7 @@ signal zoomout
 
 func _zoomout():
 	zoomout.emit()
+
+
+func _on_start_pressed() -> void:
+	_zoomout()
