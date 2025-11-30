@@ -494,11 +494,12 @@ offset_right = 448.688
 offset_bottom = 541.47
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 45
+theme_override_font_sizes/normal_font_size = 40
 text = "OPFOR SIGNAL SCRAMBLING DETECTED. SENSOR RENDERED INCOMPLETE. 
 COMPLEMENTARY BAND SWEEP MUTEX RECOMMENDED.
 >> CALLOUT INCOMING HOSTILES TO WINGMAN.
- THEY ARE IMMUNE TO YOU AND INVISIBLE TO HIM <<"
+SOME HOSTILES ARE INVISIBLE TO YOU.
+UNIFY VISCON FOR COMPLETE PICTURE <<"
 
 [node name="RichTextLabel3" type="RichTextLabel" parent="Tutorial"]
 layout_mode = 1
