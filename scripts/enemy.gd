@@ -29,7 +29,7 @@ var health = 100
 @export_group("Combat Settings")
 @export var ATTACK_RANGE = 50.0
 @export var AVOID_RANGE = 20.0
-@export var PLAYER_DETECTION_DISTANCE: float = 75.0
+@export var PLAYER_DETECTION_DISTANCE: float = 80.0
 
 @export_group("Obstacle Avoidance")
 @export var OBSTACLE_DETECT_DISTANCE = 70.0
