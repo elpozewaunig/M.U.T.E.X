@@ -26,12 +26,11 @@ var typeId: int; # 1 -> Seen by Host/Shot by Client, 2 -> Seen by Client/Shot by
 
 @export_group("Obstacle Avoidance")
 @export var OBSTACLE_DETECT_DISTANCE = 70.0 # How far ahead are obstacles detected
-@export var AVOIDANCE_FORCE = 2.0 # how strong should the avoidance movement be
-@export var RAYCAST_COUNT = 72 # how many directions are tested for collision avoidance
-@export var RAYCAST_SPREAD_ANGLE = 110.0 
-@export var EMERGENCY_BRAKE_DISTANCE = 20.0
+@export var AVOIDANCE_FORCE = 3.0 # how strong should the avoidance movement be
+@export var RAYCAST_COUNT = 36 # how many directions are tested for collision avoidance
 @export var ASTEROID_COLLISION_LAYER = 1
-@export var ENEMY_COLLISION_LAYERS = [2, 3]  # Layers for enemy types
+@export var BODY_WIDTH = 15.0
+@export var BODY_HEIGHT = 1.5 
 
 @export_group("Path Settings")
 @export var PATROL_PATH_GROUP_NAME = "PatrolPaths"
@@ -199,9 +198,9 @@ func attack_player(delta: float) -> void:
 func detect_obstacles(desired_direction: Vector3) -> Vector3:
 	var avoidance_vector = Vector3.ZERO
 	
-	# Check for both asteroids and other enemies
+	# Check front
 	var asteroid_clear = check_asteroid_ray(global_position, desired_direction, OBSTACLE_DETECT_DISTANCE)
-	var enemy_clear = check_enemy_ray(global_position, desired_direction, OBSTACLE_DETECT_DISTANCE * 0.6)  # shorter distance for enemies
+	var enemy_clear = check_enemy_ray(global_position, desired_direction, OBSTACLE_DETECT_DISTANCE * 0.6)
 	
 	var front_clear = asteroid_clear and enemy_clear
 	
@@ -209,21 +208,26 @@ func detect_obstacles(desired_direction: Vector3) -> Vector3:
 		var best_direction = Vector3.ZERO
 		var best_score = -1.0
 		
+		# Test directions in a sphere around the desired direction
 		for i in range(RAYCAST_COUNT):
-			var angle = (i - RAYCAST_COUNT / 2.0) * 30.0
-			var test_direction = desired_direction.rotated(Vector3.UP, deg_to_rad(angle))
+			# Horizontal angle: spread evenly around 360°
+			var h_angle = (i / float(RAYCAST_COUNT)) * 360.0
+			var test_direction = desired_direction.rotated(Vector3.UP, deg_to_rad(h_angle))
 			
-			var vertical_layer = i % 7
-			var vertical_angle = (vertical_layer - 3) * 20.0
+			# Vertical layers: -60°, -30°, 0°, +30°, +60°
+			var v_layer = i % 5
+			var v_angle = (v_layer - 2) * 30.0  # -60, -30, 0, 30, 60
+			
 			var side_axis = test_direction.cross(Vector3.UP).normalized()
 			if side_axis.length_squared() > 0.001:
-				test_direction = test_direction.rotated(side_axis, deg_to_rad(vertical_angle))
+				test_direction = test_direction.rotated(side_axis, deg_to_rad(v_angle))
 			
-			# Check again for both if path is clear
+			# Check if this direction is clear
 			var test_asteroid_clear = check_asteroid_ray(global_position, test_direction, OBSTACLE_DETECT_DISTANCE)
 			var test_enemy_clear = check_enemy_ray(global_position, test_direction, OBSTACLE_DETECT_DISTANCE * 0.6)
 			
 			if test_asteroid_clear and test_enemy_clear:
+				# Score: prefer directions close to desired direction
 				var score = test_direction.dot(desired_direction)
 				if score > best_score:
 					best_score = score
@@ -235,12 +239,82 @@ func detect_obstacles(desired_direction: Vector3) -> Vector3:
 	smooth_avoidance = smooth_avoidance.lerp(avoidance_vector, 0.15)
 	return smooth_avoidance
 
+
 func check_asteroid_ray(from: Vector3, direction: Vector3, distance: float) -> bool:
-	# Shoots RayCast to check if something is in the way
 	var space_state = get_world_3d().direct_space_state
-	var query = PhysicsRayQueryParameters3D.create(from, from + direction.normalized() * distance)
+	
+	var right = global_transform.basis.x.normalized()
+	var up = global_transform.basis.y.normalized()
+	var wing_offset = BODY_WIDTH / 2.0
+	var height_offset = BODY_HEIGHT / 2.0
+	
+	# 9 Test-Punkte: Center + 8 Ecken/Kanten
+	var test_points = [
+		from,                                              # Center
+		from + right * wing_offset,                        # Rechts
+		from - right * wing_offset,                        # Links
+		from + up * height_offset,                         # Oben
+		from - up * height_offset,                         # Unten
+		from + right * wing_offset + up * height_offset,   # Rechts-Oben
+		from + right * wing_offset - up * height_offset,   # Rechts-Unten
+		from - right * wing_offset + up * height_offset,   # Links-Oben
+		from - right * wing_offset - up * height_offset    # Links-Unten
+	]
+	
+	for test_from in test_points:
+		var test_to = test_from + direction.normalized() * distance
+		var query = PhysicsRayQueryParameters3D.create(test_from, test_to)
+		query.exclude = [self]
+		query.collision_mask = ASTEROID_COLLISION_LAYER
+		
+		var result = space_state.intersect_ray(query)
+		if not result.is_empty():
+			return false
+	
+	return true
+
+func check_enemy_ray(from: Vector3, direction: Vector3, distance: float) -> bool:
+	"""
+	Prüft mit 5 Rays ob andere Enemies im Weg sind
+	"""
+	var space_state = get_world_3d().direct_space_state
+	
+	# Center Ray
+	if not _single_ray_check(space_state, from, direction, distance, (1 << 1) | (1 << 2)):
+		return false
+	
+	# Offset Rays
+	var right = global_transform.basis.x.normalized()
+	var up = global_transform.basis.y.normalized()
+	
+	var wing_offset = BODY_WIDTH / 2.0
+	var height_offset = BODY_HEIGHT / 2.0
+	
+	var offsets = [
+		from + right * wing_offset,
+		from - right * wing_offset,
+		from + up * height_offset,
+		from - up * height_offset
+	]
+	
+	for offset_pos in offsets:
+		if not _single_ray_check(space_state, offset_pos, direction, distance, (1 << 1) | (1 << 2)):
+			return false
+	
+	return true
+
+# Hilfsfunktion (NEU)
+func _single_ray_check(space_state: PhysicsDirectSpaceState3D, from: Vector3, direction: Vector3, distance: float, mask: int) -> bool:
+	"""
+	Schießt einen einzelnen Ray
+	"""
+	var query = PhysicsRayQueryParameters3D.create(
+		from,
+		from + direction.normalized() * distance
+	)
 	query.exclude = [self]
-	query.collision_mask = ASTEROID_COLLISION_LAYER
+	query.collision_mask = mask
+	
 	var result = space_state.intersect_ray(query)
 	return result.is_empty()
 
@@ -294,27 +368,12 @@ func rotate_towards(direction: Vector3, delta: float) -> void:
 	var current_basis = basis.orthonormalized()
 	basis = current_basis.slerp(target_basis, ROTATION_SPEED * delta)
 	
-func check_enemy_ray(from: Vector3, direction: Vector3, distance: float) -> bool:
-	var space_state = get_world_3d().direct_space_state
-	var query = PhysicsRayQueryParameters3D.create(
-		from,
-		from + direction.normalized() * distance
-	)
-	query.exclude = [self]
-	
-	# Prüfe nur Enemy Layers (2 und 3)
-	query.collision_mask = (1 << 1) | (1 << 2)  # Layer 2 + 3
-	
-	var result = space_state.intersect_ray(query)
-	return result.is_empty()
-	
-	
 func is_player_in_sight() -> bool:
 	player_shape_cast.force_shapecast_update()
 	return player_shape_cast.is_colliding()
 
 func _on_detection_area_body_entered(body: Node3D) -> void:
-	# print("Something entered detection: ", body.name, " Groups: ", body.get_groups())
+	print("Something entered detection: ", body.name, " Groups: ", body.get_groups())
 	if current_state == PATROLLING and body.is_in_group(PLAYERS_GROUP_NAME):
 		target_player = body
 		current_state = CHASING
