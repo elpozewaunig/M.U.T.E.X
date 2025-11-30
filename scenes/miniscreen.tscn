@@ -1,7 +1,7 @@
 [gd_scene load_steps=17 format=3 uid="uid://tq2sekgu7c8"]
 
-[ext_resource type="Script" path="res://scenes/miniscreen_controller.gd" id="1_4qlu7"]
-[ext_resource type="Theme" uid="uid://dy7etv7o0neir" path="res://scenes/orangetheme.tres" id="1_j2igt"]
+[ext_resource type="Script" uid="uid://ojikmh0bkwii" path="res://scenes/miniscreen_controller.gd" id="1_4qlu7"]
+[ext_resource type="Theme" uid="uid://540k58tsq54u" path="res://scenes/orangetheme.tres" id="1_j2igt"]
 [ext_resource type="Texture2D" uid="uid://bwqjr8hrqdd33" path="res://assets/sprites/opsec und so.png" id="3_l6gtq"]
 [ext_resource type="FontFile" uid="uid://d304xnpnbruf4" path="res://assets/font/DSEG14-Classic/DSEG14Classic-Regular.ttf" id="3_oua23"]
 [ext_resource type="Texture2D" uid="uid://ch76tb3w6jhpw" path="res://assets/sprites/opsec und so_gruber.png" id="4_j7o8s"]
@@ -138,7 +138,22 @@ script/source = "extends RichTextLabel
 func _init() -> void:
 	_refresh()
 func _refresh():
-	text = str(ScoreManager.load_highscores()) #bismillah TODO?
+	var highscores = ScoreManager.load_highscores()
+	
+	# Check if empty
+	if highscores.is_empty():
+		text = \"No highscores yet :(\"
+		return
+	
+	# Build the list
+	var display_text = \"TOP HIGHSCORES\\n\\n\"
+	var count = min(highscores.size(), 5)  # Max 5 entries
+	
+	for i in range(count):
+		var entry = highscores[i]
+		display_text += \"%d. %s - %d\\n\" % [i + 1, entry.TeamName, int(entry.score)]
+	
+	text = display_text
 "
 
 [sub_resource type="GDScript" id="GDScript_hofui"]
