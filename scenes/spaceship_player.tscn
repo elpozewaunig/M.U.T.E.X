@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://d1bt2wphhu40a"]
+[gd_scene load_steps=5 format=3 uid="uid://d1bt2wphhu40a"]
 
 [ext_resource type="PackedScene" uid="uid://ctqp8yhnra6jl" path="res://assets/models/ship/Spaceship_Player.glb" id="1_l3nam"]
-[ext_resource type="Material" uid="uid://bm06tepcpvlcd" path="res://assets/models/thruster_exhaust/outline_shader.tres" id="2_oldiv"]
 
 [sub_resource type="Animation" id="Animation_oldiv"]
 length = 0.001
@@ -46,16 +45,11 @@ _data = {
 
 [node name="Spaceship_Player" instance=ExtResource("1_l3nam")]
 
-[node name="Ship A" parent="." index="0"]
-material_overlay = ExtResource("2_oldiv")
-
 [node name="RocketLauncher" parent="." index="1"]
-transform = Transform3D(0.7071077, -0.7071062, 0, 0.7071062, 0.7071077, 0, 0, 0, 1, -1.88606, 0.0916786, -0.626113)
-material_overlay = ExtResource("2_oldiv")
+transform = Transform3D(0.707107, -0.707106, 0, 0.707106, 0.707108, 0, 0, 0, 1, -1.88606, 0.0916786, -0.626113)
 
 [node name="RocketLauncher2" parent="." index="2"]
-transform = Transform3D(0.7071077, -0.7071062, 0, 0.7071062, 0.7071077, 0, 0, 0, 1, 0.721545, 2.71879, -0.629959)
-material_overlay = ExtResource("2_oldiv")
+transform = Transform3D(0.707108, -0.707106, 0, 0.707106, 0.707108, 0, 0, 0, 1, 0.721545, 2.71879, -0.629959)
 
 [node name="AnimationPlayer2" type="AnimationPlayer" parent="." index="4"]
 libraries = {

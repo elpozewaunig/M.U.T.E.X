@@ -22,6 +22,8 @@ var Ship_secondary:StandardMaterial3D
 @export var particle:Node3D
 
 func _ready() -> void:
+	primary=NetworkManager.primary
+	secondary=NetworkManager.secondary
 	recolor()
 	pass
 func recolor()-> void: 

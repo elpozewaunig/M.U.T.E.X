@@ -1,11 +1,11 @@
-[gd_scene load_steps=21 format=3 uid="uid://cypwqksg1qrc5"]
+[gd_scene load_steps=21 format=3 uid="uid://1qgw8j72resu"]
 
 [ext_resource type="Texture2D" uid="uid://b156cmxm1wmhe" path="res://assets/skybox/bg.png" id="1_l6cm7"]
 [ext_resource type="Texture2D" uid="uid://qymy4et4jfcg" path="res://assets/sprites/VerticleHUD.svg" id="2_8ln24"]
 [ext_resource type="Texture2D" uid="uid://btbnj4v1qq3v1" path="res://assets/skybox/bg2.png" id="2_rtw2f"]
 [ext_resource type="Texture2D" uid="uid://cayw6362tw6y1" path="res://assets/skybox/cockpit.png" id="2_wu84c"]
-[ext_resource type="Material" uid="uid://dg1x6fpusyufh" path="res://assets/shaders/scanline.tres" id="3_wu84c"]
-[ext_resource type="PackedScene" uid="uid://dp3rvhbvdll7k" path="res://scenes/miniscreen.tscn" id="4_8ln24"]
+[ext_resource type="Material" uid="uid://dlvdm7uj8umf3" path="res://assets/shaders/scanline.tres" id="3_wu84c"]
+[ext_resource type="PackedScene" uid="uid://tq2sekgu7c8" path="res://scenes/miniscreen.tscn" id="4_8ln24"]
 
 [sub_resource type="Animation" id="Animation_5dd4i"]
 length = 0.001
@@ -19,7 +19,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0.66675067, 0.66675067)]
+"values": [Vector2(0.666751, 0.666751)]
 }
 
 [sub_resource type="Animation" id="Animation_jk1qb"]
@@ -33,7 +33,7 @@ tracks/0/path = NodePath(".:scale")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 28.233334, 59.472355),
+"times": PackedFloat32Array(0, 28.2333, 59.4724),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector2(0.637, 0.637), Vector2(2.037, 2.037), Vector2(0.637, 0.637)]
@@ -75,7 +75,7 @@ tracks/0/path = NodePath(".:material:shader_parameter/rgb_offset_uv")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1.3209455, 1.3601601, 1.4542787, 2.1753292, 2.197702, 2.2337842, 2.7901247, 2.8124974, 2.8485796, 5.857702, 5.8800745, 5.916157, 6.596772, 6.6522465, 6.713665, 9.010557, 9.032929, 9.069012, 9.617065, 9.67254, 9.733957, 13.555327, 13.577701, 13.613783, 16.826561, 16.882036, 16.943455, 17.482407, 17.53788, 17.599297, 18.283024, 18.305397, 18.34148, 21.821737, 21.84411, 21.880192, 22.560808, 22.616282, 22.6777),
+"times": PackedFloat32Array(0, 1.32095, 1.36016, 1.45428, 2.17533, 2.1977, 2.23378, 2.79012, 2.8125, 2.84858, 5.8577, 5.88007, 5.91616, 6.59677, 6.65225, 6.71367, 9.01056, 9.03293, 9.06901, 9.61707, 9.67254, 9.73396, 13.5553, 13.5777, 13.6138, 16.8266, 16.882, 16.9435, 17.4824, 17.5379, 17.5993, 18.283, 18.3054, 18.3415, 21.8217, 21.8441, 21.8802, 22.5608, 22.6163, 22.6777),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
 "values": [0.002, 0.002, 0.057, 0.002, 0.002, 0.005, 0.002, 0.002, 0.005, 0.002, 0.002, 0.005, 0.002, 0.002, -0.002, 0.002, 0.002, 0.005, 0.002, 0.002, -0.002, 0.002, 0.002, 0.005, 0.002, 0.002, -0.002, 0.002, 0.002, -0.002, 0.002, 0.002, 0.005, 0.002, 0.002, 0.005, 0.002, 0.002, -0.002, 0.002]
@@ -97,6 +97,8 @@ signal zoom_in
 @export var move_speed_factor: float = 1.2
 @export var zoom_speed_factor: float = 1
 @onready var screen_center: Vector2 = get_viewport().get_visible_rect().size / 2
+
+@export var start:Button
 
 var target_zoom: Vector2 = Vector2(1, 1)
 var time_until_snapback: float = 0
@@ -156,6 +158,7 @@ func change_scene_usw():
 	
 	NetworkManager.host_game()
 	ScoreManager.current_team_name = container.teamname
+	
 	# TODO container.hexkot
 	# container.hexkot_secondary
 	
@@ -215,7 +218,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0.80376893, 0.80376893)]
+"values": [Vector2(0.803769, 0.803769)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -264,8 +267,8 @@ tracks/0/path = NodePath(".:zoom")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.6666667, 1.2666667),
-"transitions": PackedFloat32Array(7.209997, 1),
+"times": PackedFloat32Array(0.666667, 1.26667),
+"transitions": PackedFloat32Array(7.21, 1),
 "update": 0,
 "values": [Vector2(1, 1), Vector2(4.725, 4.725)]
 }
@@ -276,10 +279,10 @@ tracks/1/path = NodePath(".:offset")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.20000002, 1.2666667),
-"transitions": PackedFloat32Array(1, 0.1961461),
+"times": PackedFloat32Array(0.2, 1.26667),
+"transitions": PackedFloat32Array(1, 0.196146),
 "update": 0,
-"values": [Vector2(0, 0), Vector2(-4448.405, 951.81)]
+"values": [Vector2(0, 0), Vector2(-4448.4, 951.81)]
 }
 tracks/2/type = "method"
 tracks/2/imported = false
@@ -288,7 +291,7 @@ tracks/2/path = NodePath(".")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(1.2333333),
+"times": PackedFloat32Array(1.23333),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -306,7 +309,7 @@ tracks/0/path = NodePath(".:zoom")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.4, 2.4666672),
+"times": PackedFloat32Array(0.4, 2.46667),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(4.725, 4.725), Vector2(1, 1)]
@@ -318,10 +321,10 @@ tracks/1/path = NodePath(".:offset")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.3000001, 2.766667),
-"transitions": PackedFloat32Array(0.1961461, 1),
+"times": PackedFloat32Array(0.3, 2.76667),
+"transitions": PackedFloat32Array(0.196146, 1),
 "update": 0,
-"values": [Vector2(-4448.405, 951.81), Vector2(0, 0)]
+"values": [Vector2(-4448.4, 951.81), Vector2(0, 0)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -330,7 +333,7 @@ tracks/2/path = NodePath("../../BG/BGAfter:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.5000001, 0.70000017),
+"times": PackedFloat32Array(0.5, 0.7),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -342,10 +345,10 @@ tracks/3/path = NodePath("../../BG/BGAfter:scale")
 tracks/3/interp = 2
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(2.6666667, 3.88, 5.7333336),
-"transitions": PackedFloat32Array(1, 1, 3.3635933),
+"times": PackedFloat32Array(2.66667, 3.88, 5.73333),
+"transitions": PackedFloat32Array(1, 1, 3.36359),
 "update": 0,
-"values": [Vector2(0.80376893, 0.80376893), Vector2(0.8092198, 0.8092198), Vector2(1.159, 1.159)]
+"values": [Vector2(0.803769, 0.803769), Vector2(0.80922, 0.80922), Vector2(1.159, 1.159)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -354,7 +357,7 @@ tracks/4/path = NodePath("../../FADETOWHITE:modulate")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(3.9999998, 5.6000004),
+"times": PackedFloat32Array(4, 5.6),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
@@ -366,7 +369,7 @@ tracks/5/path = NodePath("../../BG/BGAfter:modulate")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0.66666687, 0.9333333),
+"times": PackedFloat32Array(0.666667, 0.933333),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
@@ -378,7 +381,7 @@ tracks/6/path = NodePath("../../FADETOWHITE:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(2.9333339, 3.7333333),
+"times": PackedFloat32Array(2.93333, 3.73333),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -390,7 +393,7 @@ tracks/7/path = NodePath(".")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
-"times": PackedFloat32Array(5.7666664),
+"times": PackedFloat32Array(5.76667),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -424,8 +427,8 @@ grow_vertical = 2
 scroll_scale = Vector2(0.1, 0.1)
 
 [node name="BG" type="Sprite2D" parent="BG"]
-position = Vector2(596, 266.00003)
-scale = Vector2(0.66675067, 0.66675067)
+position = Vector2(596, 266)
+scale = Vector2(0.666751, 0.666751)
 texture = ExtResource("1_l6cm7")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="BG/BG"]
@@ -436,26 +439,26 @@ autoplay = "woosh"
 
 [node name="BGAfter" type="Sprite2D" parent="BG"]
 visible = false
-position = Vector2(593.00006, 214)
-scale = Vector2(0.80376893, 0.80376893)
+position = Vector2(593, 214)
+scale = Vector2(0.803769, 0.803769)
 texture = ExtResource("2_rtw2f")
 
 [node name="cockpithud" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0.07, 0.07)
 
 [node name="SvgviewerOutput" type="Sprite2D" parent="cockpithud"]
-position = Vector2(593.00006, 241)
-scale = Vector2(0.14077969, 0.14077969)
+position = Vector2(593, 241)
+scale = Vector2(0.14078, 0.14078)
 texture = ExtResource("2_8ln24")
 region_enabled = true
-region_rect = Rect2(0, 705.48254, 400, 852.1505)
+region_rect = Rect2(0, 705.483, 400, 852.151)
 
 [node name="FG" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0.05, 0.05)
 
 [node name="FG" type="Sprite2D" parent="FG"]
-position = Vector2(587.00006, 323)
-scale = Vector2(0.9318551, 0.9318551)
+position = Vector2(587, 323)
+scale = Vector2(0.931855, 0.931855)
 texture = ExtResource("2_wu84c")
 
 [node name="TextureRect" type="TextureRect" parent="FG"]
@@ -464,8 +467,8 @@ offset_left = 257.0
 offset_top = 321.0
 offset_right = 1457.0
 offset_bottom = 1321.0
-rotation = -0.01782701
-scale = Vector2(0.15700814, 0.15354782)
+rotation = -0.017827
+scale = Vector2(0.157008, 0.153548)
 texture = SubResource("ViewportTexture_wu84c")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="FG/TextureRect"]
@@ -495,7 +498,7 @@ libraries = {
 
 [node name="FADETOWHITE" type="Sprite2D" parent="."]
 visible = false
-scale = Vector2(157.66106, 83.95388)
+scale = Vector2(157.661, 83.9539)
 texture = SubResource("GradientTexture2D_oa1go")
 
 [connection signal="zoomout" from="FG/SubViewport/Control" to="Node2D/Camera2D" method="_on_control_zoomout"]

@@ -1,7 +1,7 @@
-[gd_scene load_steps=17 format=3 uid="uid://dp3rvhbvdll7k"]
+[gd_scene load_steps=17 format=3 uid="uid://tq2sekgu7c8"]
 
-[ext_resource type="Script" uid="uid://ojikmh0bkwii" path="res://scenes/miniscreen_controller.gd" id="1_4qlu7"]
-[ext_resource type="Theme" uid="uid://540k58tsq54u" path="res://scenes/orangetheme.tres" id="1_j2igt"]
+[ext_resource type="Script" path="res://scenes/miniscreen_controller.gd" id="1_4qlu7"]
+[ext_resource type="Theme" uid="uid://dy7etv7o0neir" path="res://scenes/orangetheme.tres" id="1_j2igt"]
 [ext_resource type="Texture2D" uid="uid://bwqjr8hrqdd33" path="res://assets/sprites/opsec und so.png" id="3_l6gtq"]
 [ext_resource type="FontFile" uid="uid://d304xnpnbruf4" path="res://assets/font/DSEG14-Classic/DSEG14Classic-Regular.ttf" id="3_oua23"]
 [ext_resource type="Texture2D" uid="uid://ch76tb3w6jhpw" path="res://assets/sprites/opsec und so_gruber.png" id="4_j7o8s"]
@@ -164,8 +164,8 @@ resource_name = "stoart"
 script/source = "extends Button
 
 var teamname = \"IJoined\"
-var hexkot = \"#123123\"
-var hexkot_secondary = \"#123123\"
+@export var hexkot = \"#123123\"
+@export var hexkot_secondary = \"#123123\"
 var iJoinedNotHosted = true
 
 func _process(_delta: float) -> void:
@@ -173,6 +173,8 @@ func _process(_delta: float) -> void:
 		teamname = $\"../LineEdit\".text
 		hexkot = normalize_hex($\"../LineEdit2\".text)
 		hexkot_secondary = normalize_hex($\"../LineEdit3\".text)
+		NetworkManager.primary=hexkot
+		NetworkManager.secondary=hexkot_secondary
 		iJoinedNotHosted = false
 		disabled = false
 	else:
@@ -206,9 +208,9 @@ func normalize_hex(input: String) -> String:
 [node name="Control" type="Control"]
 layout_mode = 3
 anchor_right = 1.042
-anchor_bottom = 1.5430001
-offset_right = -0.3840332
-offset_bottom = 0.1359253
+anchor_bottom = 1.543
+offset_right = -0.384033
+offset_bottom = 0.135925
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_4qlu7")
@@ -234,8 +236,8 @@ offset_right = 312.0
 offset_bottom = 175.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(1.376379, 0.6157288)
-theme_override_colors/default_color = Color(0.3766586, 0.37665844, 0.37665844, 1)
+scale = Vector2(1.37638, 0.615729)
+theme_override_colors/default_color = Color(0.376659, 0.376658, 0.376658, 1)
 theme_override_font_sizes/normal_font_size = 25
 text = "                                                                                                                           
                                                                                                                            
@@ -283,7 +285,7 @@ offset_right = 305.0
 offset_bottom = 177.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(1.376379, 0.6157288)
+scale = Vector2(1.37638, 0.615729)
 theme_override_font_sizes/normal_font_size = 25
 text = "                                                                                                                           
                                                                                                                            
@@ -325,13 +327,13 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 398.00003
-offset_top = 730.00006
+offset_left = 398.0
+offset_top = 730.0
 offset_right = 642.0
 offset_bottom = 730.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(1.3889232, 1.3889232)
+scale = Vector2(1.38892, 1.38892)
 theme_override_fonts/normal_font = ExtResource("3_oua23")
 theme_override_font_sizes/normal_font_size = 30
 text = "- PRESS  START -"
@@ -373,11 +375,11 @@ text = "[ OK ] TUNNEL MARGIN THRESHOLD ADJUSTED
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Menu"]
 layout_mode = 0
-offset_left = 821.00006
+offset_left = 821.0
 offset_top = 165.0
-offset_right = 908.00006
+offset_right = 908.0
 offset_bottom = 353.0
-scale = Vector2(1.5678881, 1.5678881)
+scale = Vector2(1.56789, 1.56789)
 
 [node name="HostGameBTN" type="Button" parent="Menu/VBoxContainer"]
 layout_mode = 2
@@ -411,12 +413,12 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 106.0
-offset_top = 51.000004
+offset_top = 51.0
 offset_right = 106.0
 offset_bottom = 51.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.8403049, 0.8403049)
+scale = Vector2(0.840305, 0.840305)
 theme = ExtResource("1_j2igt")
 script = SubResource("GDScript_t6nao")
 
@@ -431,7 +433,7 @@ offset_right = 274.0
 offset_bottom = 634.0
 grow_horizontal = 2
 grow_vertical = 2
-rotation = -1.5707964
+rotation = -1.5708
 theme_override_fonts/normal_font = ExtResource("3_oua23")
 theme_override_font_sizes/normal_font_size = 30
 text = "MISSION  OBJECTIVE  UPDATED"
@@ -441,10 +443,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 204.6876
-offset_top = 541.47015
-offset_right = 448.68762
-offset_bottom = 541.4702
+offset_left = 204.688
+offset_top = 541.47
+offset_right = 448.688
+offset_bottom = 541.47
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/normal_font_size = 45
@@ -458,10 +460,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 973.4562
-offset_top = 533.1398
-offset_right = 1217.456
-offset_bottom = 533.1399
+offset_left = 973.456
+offset_top = 533.14
+offset_right = 1217.46
+offset_bottom = 533.14
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/normal_font_size = 45
@@ -475,7 +477,7 @@ NEUTRALIZE."
 layout_mode = 0
 offset_left = 134.475
 offset_top = 104.724
-offset_right = 387.47507
+offset_right = 387.475
 offset_bottom = 188.724
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath(".")
@@ -486,7 +488,7 @@ text = "   >>ACK<<   "
 
 [node name="OpsecUndSo" type="Sprite2D" parent="Tutorial"]
 position = Vector2(588, 350)
-scale = Vector2(0.45610672, 0.45610672)
+scale = Vector2(0.456107, 0.456107)
 texture = ExtResource("4_j7o8s")
 
 [node name="Credits" type="Panel" parent="."]
@@ -496,12 +498,12 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 106.0
-offset_top = 51.000004
+offset_top = 51.0
 offset_right = 106.0
 offset_bottom = 51.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.8403049, 0.8403049)
+scale = Vector2(0.840305, 0.840305)
 theme = ExtResource("1_j2igt")
 script = SubResource("GDScript_lt044")
 
@@ -510,13 +512,13 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 455.78687
-offset_top = 270.13998
-offset_right = 699.78687
-offset_bottom = 270.1399
+offset_left = 455.787
+offset_top = 270.14
+offset_right = 699.787
+offset_bottom = 270.14
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.75156784, 0.75156784)
+scale = Vector2(0.751568, 0.751568)
 theme_override_font_sizes/normal_font_size = 70
 text = "
 -- Code -- 
@@ -530,12 +532,12 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 618.823
-offset_top = 270.14005
+offset_top = 270.14
 offset_right = 862.823
 offset_bottom = 270.14
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.7515678, 0.7515678)
+scale = Vector2(0.751568, 0.751568)
 theme_override_font_sizes/normal_font_size = 70
 text = "
 -- Art --
@@ -548,13 +550,13 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 761.6283
+offset_left = 761.628
 offset_top = 270.14
-offset_right = 1005.6279
+offset_right = 1005.63
 offset_bottom = 270.14
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.75156784, 0.75156784)
+scale = Vector2(0.751568, 0.751568)
 theme_override_font_sizes/normal_font_size = 70
 text = "
 -- Music & Sound --
@@ -567,23 +569,23 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 452.2168
-offset_top = 198.73738
-offset_right = 696.2168
-offset_bottom = 198.73743
+offset_left = 452.217
+offset_top = 198.737
+offset_right = 696.217
+offset_bottom = 198.737
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.75156784, 0.75156784)
+scale = Vector2(0.751568, 0.751568)
 theme_override_font_sizes/normal_font_size = 70
 text = "Q1 Studios - KLUJAM Tech edition  NOV 2025
 Made with Love, Godot and Caffeine"
 
 [node name="RETURNFROMCREDITSBTN" type="Button" parent="Credits"]
 layout_mode = 0
-offset_left = 134.47491
-offset_top = 104.72389
-offset_right = 387.47498
-offset_bottom = 188.72389
+offset_left = 134.475
+offset_top = 104.724
+offset_right = 387.475
+offset_bottom = 188.724
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_right = NodePath(".")
@@ -592,9 +594,9 @@ theme_override_font_sizes/font_size = 75
 text = "<< return >>"
 
 [node name="OpsecUndSo" type="Sprite2D" parent="Credits"]
-position = Vector2(1103.171, 2054.0164)
-rotation = 1.5707964
-scale = Vector2(2.2445862, 2.2445862)
+position = Vector2(1103.17, 2054.02)
+rotation = 1.5708
+scale = Vector2(2.24459, 2.24459)
 texture = ExtResource("3_l6gtq")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Credits"]
@@ -602,13 +604,13 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 172.55643
-offset_top = 572.4112
-offset_right = 416.55615
-offset_bottom = 572.41113
+offset_left = 172.556
+offset_top = 572.411
+offset_right = 416.556
+offset_bottom = 572.411
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/default_color = Color(0.55029315, 0.5502932, 0.55029315, 1)
+theme_override_colors/default_color = Color(0.550293, 0.550293, 0.550293, 1)
 theme_override_fonts/normal_font = ExtResource("3_oua23")
 theme_override_font_sizes/normal_font_size = 90
 text = "CREDITS"
@@ -618,10 +620,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 165.41617
-offset_top = 573.6013
-offset_right = 409.4159
-offset_bottom = 573.6013
+offset_left = 165.416
+offset_top = 573.601
+offset_right = 409.416
+offset_bottom = 573.601
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
@@ -636,12 +638,12 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 106.0
-offset_top = 51.000004
+offset_top = 51.0
 offset_right = 106.0
 offset_bottom = 51.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.8403049, 0.8403049)
+scale = Vector2(0.840305, 0.840305)
 theme = ExtResource("1_j2igt")
 script = SubResource("GDScript_qm21r")
 
@@ -650,13 +652,13 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 154.70575
-offset_top = 247.52917
-offset_right = 398.7058
-offset_bottom = 247.52905
+offset_left = 154.706
+offset_top = 247.529
+offset_right = 398.706
+offset_bottom = 247.529
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.75156784, 0.75156784)
+scale = Vector2(0.751568, 0.751568)
 theme_override_font_sizes/normal_font_size = 70
 text = "<Option Menu incomplete>
 
@@ -666,10 +668,10 @@ please ascribe additional points to submission for adhering to theme
 
 [node name="RETURNFROMOPTIONS" type="Button" parent="Options"]
 layout_mode = 0
-offset_left = 134.47491
-offset_top = 104.72389
-offset_right = 387.47498
-offset_bottom = 188.72389
+offset_left = 134.475
+offset_top = 104.724
+offset_right = 387.475
+offset_bottom = 188.724
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_right = NodePath(".")
@@ -684,12 +686,12 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 106.0
-offset_top = 51.000004
+offset_top = 51.0
 offset_right = 106.0
 offset_bottom = 51.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.8403049, 0.8403049)
+scale = Vector2(0.840305, 0.840305)
 theme = ExtResource("1_j2igt")
 script = SubResource("GDScript_bi3l1")
 
@@ -698,22 +700,22 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 154.70575
-offset_top = 198.73737
-offset_right = 398.7058
-offset_bottom = 198.7373
+offset_left = 154.706
+offset_top = 198.737
+offset_right = 398.706
+offset_bottom = 198.737
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.75156784, 0.75156784)
+scale = Vector2(0.751568, 0.751568)
 theme_override_font_sizes/normal_font_size = 70
 text = "<Host Will Decide COLOR AND TEAM NAME>"
 
 [node name="CANCELHOST" type="Button" parent="HOSTING"]
 layout_mode = 0
-offset_left = 134.47491
-offset_top = 104.72389
-offset_right = 387.47498
-offset_bottom = 188.72389
+offset_left = 134.475
+offset_top = 104.724
+offset_right = 387.475
+offset_bottom = 188.724
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath("../HOST")
 focus_neighbor_right = NodePath(".")
@@ -723,10 +725,10 @@ text = "<< return >>"
 
 [node name="HOST" type="Button" parent="HOSTING"]
 layout_mode = 0
-offset_left = 134.47491
-offset_top = 264.1898
-offset_right = 387.47498
-offset_bottom = 348.1898
+offset_left = 134.475
+offset_top = 264.19
+offset_right = 387.475
+offset_bottom = 348.19
 focus_neighbor_left = NodePath("../JOIN")
 focus_neighbor_top = NodePath("../CANCELHOST")
 focus_neighbor_right = NodePath("../JOIN")
@@ -736,10 +738,10 @@ text = "HOST GAME"
 
 [node name="JOIN" type="Button" parent="HOSTING"]
 layout_mode = 0
-offset_left = 574.7914
-offset_top = 264.1898
-offset_right = 827.79144
-offset_bottom = 348.1898
+offset_left = 574.791
+offset_top = 264.19
+offset_right = 827.791
+offset_bottom = 348.19
 focus_neighbor_left = NodePath("../HOST")
 focus_neighbor_top = NodePath("../CANCELHOST")
 focus_neighbor_right = NodePath("../HOST")
@@ -752,13 +754,13 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 142.80531
-offset_top = 385.57434
-offset_right = 386.8053
-offset_bottom = 385.57422
+offset_left = 142.805
+offset_top = 385.574
+offset_right = 386.805
+offset_bottom = 385.574
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.75156784, 0.75156784)
+scale = Vector2(0.751568, 0.751568)
 theme_override_font_sizes/normal_font_size = 70
 text = ":("
 script = SubResource("GDScript_ms7bd")
@@ -769,12 +771,12 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 42.8416
-offset_top = 773.5287
-offset_right = 286.8413
-offset_bottom = 773.52856
+offset_top = 773.529
+offset_right = 286.841
+offset_bottom = 773.529
 grow_horizontal = 2
 grow_vertical = 2
-rotation = -1.5707964
+rotation = -1.5708
 scale = Vector2(0.503559, 0.503559)
 theme_override_fonts/normal_font = ExtResource("3_oua23")
 theme_override_font_sizes/normal_font_size = 90
@@ -787,12 +789,12 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 106.0
-offset_top = 51.000004
+offset_top = 51.0
 offset_right = 106.0
 offset_bottom = 51.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.8403049, 0.8403049)
+scale = Vector2(0.840305, 0.840305)
 theme = ExtResource("1_j2igt")
 script = SubResource("GDScript_hofui")
 
@@ -801,22 +803,22 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 154.70575
-offset_top = 247.52917
-offset_right = 398.7058
-offset_bottom = 247.52905
+offset_left = 154.706
+offset_top = 247.529
+offset_right = 398.706
+offset_bottom = 247.529
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.75156784, 0.75156784)
+scale = Vector2(0.751568, 0.751568)
 theme_override_font_sizes/normal_font_size = 70
 text = "TEAM NAME:"
 
 [node name="CANCELHH" type="Button" parent="HOSTINGASHOST"]
 layout_mode = 0
-offset_left = 134.47491
-offset_top = 104.72389
-offset_right = 387.47498
-offset_bottom = 188.72389
+offset_left = 134.475
+offset_top = 104.724
+offset_right = 387.475
+offset_bottom = 188.724
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath("../LineEdit2")
 focus_neighbor_right = NodePath(".")
@@ -826,10 +828,10 @@ text = "<< return >>"
 
 [node name="START" type="Button" parent="HOSTINGASHOST"]
 layout_mode = 0
-offset_left = 669.99493
-offset_top = 312.9816
+offset_left = 669.995
+offset_top = 312.982
 offset_right = 922.995
-offset_bottom = 396.9816
+offset_bottom = 396.982
 focus_neighbor_left = NodePath("../LineEdit")
 focus_neighbor_top = NodePath("../CANCELHH")
 focus_neighbor_right = NodePath("../LineEdit")
@@ -842,10 +844,10 @@ script = SubResource("GDScript_ib01u")
 [node name="LineEdit" type="LineEdit" parent="HOSTINGASHOST"]
 custom_minimum_size = Vector2(384.705, 79.67)
 layout_mode = 0
-offset_left = 154.70575
-offset_top = 312.98163
-offset_right = 539.41077
-offset_bottom = 392.6516
+offset_left = 154.706
+offset_top = 312.982
+offset_right = 539.411
+offset_bottom = 392.652
 focus_neighbor_left = NodePath("../START")
 focus_neighbor_top = NodePath("../CANCELHH")
 focus_neighbor_right = NodePath("../START")
@@ -858,23 +860,23 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 154.70575
-offset_top = 397.4748
-offset_right = 398.7058
-offset_bottom = 397.4746
+offset_left = 154.706
+offset_top = 397.475
+offset_right = 398.706
+offset_bottom = 397.475
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.75156784, 0.75156784)
+scale = Vector2(0.751568, 0.751568)
 theme_override_font_sizes/normal_font_size = 70
 text = "TEAM COLOR PRIMARY:"
 
 [node name="LineEdit2" type="LineEdit" parent="HOSTINGASHOST"]
 custom_minimum_size = Vector2(384.705, 79.67)
 layout_mode = 0
-offset_left = 154.70575
-offset_top = 462.92722
-offset_right = 539.41077
-offset_bottom = 542.5972
+offset_left = 154.706
+offset_top = 462.927
+offset_right = 539.411
+offset_bottom = 542.597
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath("../LineEdit")
 focus_neighbor_right = NodePath(".")
@@ -888,13 +890,13 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 22.610834
-offset_top = 561.70087
-offset_right = 266.61084
-offset_bottom = 561.7009
+offset_left = 22.6108
+offset_top = 561.701
+offset_right = 266.611
+offset_bottom = 561.701
 grow_horizontal = 2
 grow_vertical = 2
-rotation = -1.5707964
+rotation = -1.5708
 theme_override_fonts/normal_font = ExtResource("3_oua23")
 theme_override_font_sizes/normal_font_size = 30
 text = "PILOT  PREFERENCES"
@@ -904,23 +906,23 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 154.70575
-offset_top = 548.6104
-offset_right = 398.7058
-offset_bottom = 548.61035
+offset_left = 154.706
+offset_top = 548.61
+offset_right = 398.706
+offset_bottom = 548.61
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.75156784, 0.75156784)
+scale = Vector2(0.751568, 0.751568)
 theme_override_font_sizes/normal_font_size = 70
 text = "TEAM COLOR SECONDARY:"
 
 [node name="LineEdit3" type="LineEdit" parent="HOSTINGASHOST"]
 custom_minimum_size = Vector2(384.705, 79.67)
 layout_mode = 0
-offset_left = 154.70575
-offset_top = 614.06287
-offset_right = 539.41077
-offset_bottom = 693.73285
+offset_left = 154.706
+offset_top = 614.063
+offset_right = 539.411
+offset_bottom = 693.733
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath("../LineEdit2")
 focus_neighbor_right = NodePath(".")

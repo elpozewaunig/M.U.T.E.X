@@ -11,9 +11,9 @@ config_version=5
 [application]
 
 config/name="KluJamTechEditionWS2025"
-run/main_scene="uid://cypwqksg1qrc5"
-config/features=PackedStringArray("4.5", "GL Compatibility")
-boot_splash/bg_color=Color(0.78039217, 0.42745098, 0.18431373, 1)
+run/main_scene="uid://1qgw8j72resu"
+config/features=PackedStringArray("4.4", "GL Compatibility")
+boot_splash/bg_color=Color(0.780392, 0.427451, 0.184314, 1)
 boot_splash/image="uid://xupiwbanh4s"
 config/icon="uid://dglg4lxaouuf7"
 boot_splash/minimum_display_time=2500
@@ -22,6 +22,7 @@ boot_splash/minimum_display_time=2500
 
 NetworkManager="*res://scripts/networkManager.gd"
 ScoreManager="*res://scripts/scoreManager.gd"
+Global="*res://scripts/Global.gd"
 
 [display]
 

@@ -1,11 +1,11 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dg1x6fpusyufh"]
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dlvdm7uj8umf3"]
 
-[ext_resource type="Shader" uid="uid://0qqjogeqmmfr" path="res://assets/shaders/scanline.gdshader" id="1_eonlv"]
+[ext_resource type="Shader" path="res://assets/shaders/scanline.gdshader" id="1_eonlv"]
 
 [resource]
 shader = ExtResource("1_eonlv")
-shader_parameter/scanline_count = 103.8730049339675
+shader_parameter/scanline_count = 103.873
 shader_parameter/scanline_speed = -0.1
-shader_parameter/scanline_strength = 0.690000032775
+shader_parameter/scanline_strength = 0.69
 shader_parameter/rgb_offset_uv = 0.002
 shader_parameter/curvature = 1.065
