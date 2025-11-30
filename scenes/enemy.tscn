@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://tfednihsjjtl" path="res://scripts/enemy.gd" id="1_7p1mj"]
 [ext_resource type="PackedScene" uid="uid://b3aj32sk5v1qo" path="res://assets/models/enemy.glb" id="2_5uy6h"]
-[ext_resource type="Script" uid="uid://cindsixiocgcm" path="res://scripts/enemyVisibility.gd" id="3_4ra3w"]
-[ext_resource type="PackedScene" path="res://scenes/enemy_gun.tscn" id="3_5uy6h"]
+[ext_resource type="Script" path="res://scripts/enemyVisibility.gd" id="3_4ra3w"]
+[ext_resource type="PackedScene" uid="uid://dls7354f4iw2m" path="res://scenes/enemy_gun.tscn" id="3_5uy6h"]
 [ext_resource type="PackedScene" uid="uid://be63w05i85cw1" path="res://scenes/thruster_exhaustEnemy.tscn" id="3_nenq2"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_8tegq"]
@@ -20,16 +20,14 @@ properties/3/path = NodePath("Visuals:rotation")
 properties/3/spawn = true
 properties/3/replication_mode = 1
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_md0e3"]
-radius = 2.00928
-height = 19.226
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4ra3w"]
-radius = 3.22119
-height = 19.8608
+[sub_resource type="BoxShape3D" id="BoxShape3D_c4w8v"]
+size = Vector3(15, 1.5, 5)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_7p1mj"]
-radius = 50.0
+radius = 75.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xwavj"]
+size = Vector3(40, 150, 20)
 
 [node name="Enemy" type="CharacterBody3D" node_paths=PackedStringArray("model_container") groups=["enemies"]]
 collision_layer = 2
@@ -45,13 +43,11 @@ metadata/_edit_group_ = true
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_8tegq")
 
-[node name="EnemyCollisionBody" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 2.84217e-14, -1.22872e-07, -3.05278)
-shape = SubResource("CapsuleShape3D_md0e3")
+[node name="Area3D" type="Area3D" parent="."]
 
-[node name="EnemyCollisionWings" type="CollisionShape3D" parent="."]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -0.0393061, 0.288649, 4.79873)
-shape = SubResource("CapsuleShape3D_4ra3w")
+[node name="EnemyCollisionBody" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1.5)
+shape = SubResource("BoxShape3D_c4w8v")
 
 [node name="DetectionArea" type="Area3D" parent="."]
 collision_layer = 2
@@ -64,22 +60,56 @@ shape = SubResource("SphereShape3D_7p1mj")
 [node name="Visuals" type="Node3D" parent="."]
 
 [node name="ThrusterExhaust" parent="Visuals" instance=ExtResource("3_nenq2")]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 2.72978, 6.07812)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.10374606, 0.87079096, 2.2219615)
 
 [node name="ThrusterExhaust2" parent="Visuals" instance=ExtResource("3_nenq2")]
-transform = Transform3D(0.6, 0, 0, 0, -2.62268e-08, 0.6, 0, -0.6, -2.62268e-08, -27.5042, 2.93507, 6.07812)
+transform = Transform3D(0.6, 0, 0, 0, -2.62268e-08, 0.6, 0, -0.6, -2.62268e-08, -6.9290843, 0.77685976, 1.7972423)
 
 [node name="ThrusterExhaust3" parent="Visuals" instance=ExtResource("3_nenq2")]
-transform = Transform3D(0.6, 0, 0, 0, -2.62268e-08, 0.6, 0, -0.6, -2.62268e-08, 27.5029, 2.93507, 6.07812)
+transform = Transform3D(0.6, 0, 0, 0, -2.6226834e-08, 0.6, 0, -0.6, -2.6226834e-08, 6.9085464, 0.759385, 1.8362362)
 
 [node name="enemy" parent="Visuals" instance=ExtResource("2_5uy6h")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+transform = Transform3D(-0.25, 0, -3.774895e-08, 0, 0.25, 0, 3.774895e-08, 0, -0.25, 0, 0, 0)
 
-[node name="EnemyGun" parent="Visuals" instance=ExtResource("3_5uy6h")]
+[node name="Guns" type="Node3D" parent="Visuals"]
+
+[node name="EnemyGun" parent="Visuals/Guns" instance=ExtResource("3_5uy6h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.25, 0.7, 0.5)
+
+[node name="EnemyGun8" parent="Visuals/Guns" instance=ExtResource("3_5uy6h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.25, 0.7, 0.5)
+
+[node name="EnemyGun7" parent="Visuals/Guns" instance=ExtResource("3_5uy6h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.7, 0.5)
+
+[node name="EnemyGun6" parent="Visuals/Guns" instance=ExtResource("3_5uy6h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.7, 0.5)
+
+[node name="EnemyGun5" parent="Visuals/Guns" instance=ExtResource("3_5uy6h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.7, 0.5)
+
+[node name="EnemyGun4" parent="Visuals/Guns" instance=ExtResource("3_5uy6h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 0.7, 0.5)
+
+[node name="EnemyGun3" parent="Visuals/Guns" instance=ExtResource("3_5uy6h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.7, 0.5)
+
+[node name="EnemyGun2" parent="Visuals/Guns" instance=ExtResource("3_5uy6h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, 0.7, 0.5)
 
 [node name="VisibilityConstroller" type="Node3D" parent="." node_paths=PackedStringArray("visuals_node")]
 script = ExtResource("3_4ra3w")
 visuals_node = NodePath("../Visuals")
 
+[node name="PlayerShapeCast" type="ShapeCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, -11.340929)
+shape = SubResource("BoxShape3D_xwavj")
+target_position = Vector3(0, -64, 0)
+collision_mask = 24
+
+[node name="GunCooldown" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_collision_entered"]
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]

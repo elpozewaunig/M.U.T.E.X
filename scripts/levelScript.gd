@@ -2,6 +2,7 @@ extends Node3D # Or Node2D
 
 @export var player_scene: PackedScene
 @export var enemy_scene: PackedScene 
+@export var max_enemy_count: int = 70
 @onready var enemySpawner: MultiplayerSpawner = $EnemySpawner
 
 func _ready():
@@ -40,16 +41,18 @@ func spawn_enemy():
 		# Only host may spawn enemies
 		return;
 		
+	if $Enemies.get_child_count() >= max_enemy_count:
+		return;
+		
+	print("Spawn enemy number %s of max. %s" % [$Enemies.get_child_count(), max_enemy_count])
+		
 	var route_data = $PatrolRouteManager.get_random_route()
-
-	
-	var enemyTypes = [1,2]
 	var enemy_instance = enemy_scene.instantiate();
 	enemy_instance.name = "Enemy_%d%d" % [Time.get_ticks_usec(), randi()]
 	$Enemies.add_child(enemy_instance)
 	enemy_instance.set_multiplayer_authority(1)
 	
 	
-	enemy_instance.initialize(enemyTypes.pick_random(), route_data["points"])
+	enemy_instance.initialize(1, route_data["points"])
 func _on_enemy_spawn_timer_timeout() -> void:
 	spawn_enemy()
