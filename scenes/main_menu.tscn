@@ -102,8 +102,12 @@ signal zoom_in
 
 @export var start:Button
 
+@export var mouse_hide_time: float = 3.0
+
 var target_zoom: Vector2 = Vector2(1, 1)
 var time_until_snapback: float = 0
+
+var time_since_mouse: float = 0
 
 func _ready() -> void:
 	position = screen_center
@@ -111,6 +115,11 @@ func _ready() -> void:
 
 var zoomed = false
 func _process(delta: float) -> void:
+	if time_since_mouse < mouse_hide_time:
+		time_since_mouse += delta
+		if time_since_mouse >= mouse_hide_time:
+			Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	
 	if zoomed:
 		return
 	var mouse_pos: Vector2 = get_viewport().get_mouse_position()
@@ -145,9 +154,11 @@ func fettsack():
 	
 
 func _input(event: InputEvent) -> void:
-	$\"../../FG/SubViewport\".push_input(event,false)
-	#print(event)
+	if event is InputEventMouseMotion or event is InputEventMouseButton:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		time_since_mouse = 0
 	
+	$\"../../FG/SubViewport\".push_input(event,false)
 
 
 func _on_control_zoomout() -> void:

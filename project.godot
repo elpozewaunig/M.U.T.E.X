@@ -30,6 +30,7 @@ window/size/mode=3
 window/size/initial_position_type=0
 window/size/always_on_top=true
 window/stretch/mode="canvas_items"
+window/size/mode.editor=0
 
 [input]
 
