@@ -14,7 +14,6 @@ func _ready():
 		$LifeTimer.timeout.connect(queue_free)
 	body_entered.connect(_on_impact)
 
-# Simple setup function called immediately after spawning
 func setup_missile(pos: Vector3, basis_rot: Basis, is_host: bool):
 	global_position = pos
 	global_transform.basis = basis_rot
@@ -30,11 +29,13 @@ func setup_missile(pos: Vector3, basis_rot: Basis, is_host: bool):
 	
 	if shooter_is_host:
 		# Host Fired -> Target Enemy 2 (3) + Client (5)
+		print("Host Fired")
 		set_collision_mask_value(3, true)
 		set_collision_mask_value(5, true)
 		$DetectionArea.set_collision_mask_value(3, true)
 	else:
 		# Client Fired -> Target Enemy 1 (2) + Host (4)
+		print("Client Fired")
 		set_collision_mask_value(2, true)
 		set_collision_mask_value(4, true)
 		$DetectionArea.set_collision_mask_value(2, true)
