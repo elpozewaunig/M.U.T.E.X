@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bdfw8wp21jlmh" path="res://scenes/thruster_exhaust.tscn" id="5_tuyoq"]
 [ext_resource type="Material" uid="uid://bm06tepcpvlcd" path="res://assets/models/thruster_exhaust/outline_shader.tres" id="6_ur7pv"]
 [ext_resource type="Texture2D" uid="uid://qymy4et4jfcg" path="res://assets/sprites/svgviewer-output.svg" id="7_fjrip"]
-[ext_resource type="Script" uid="uid://bckvg3syriw3r" path="res://scenes/texture_rect.gd" id="8_smehm"]
+[ext_resource type="Script" path="res://scenes/texture_rect.gd" id="8_smehm"]
 [ext_resource type="PackedScene" uid="uid://cduaufs6120d2" path="res://scenes/thruster_particles.tscn" id="11_d2wvv"]
 [ext_resource type="Texture2D" uid="uid://dqwa42jtr1sqb" path="res://assets/models/thruster_exhaust/particle1.png" id="12_3v2ag"]
 

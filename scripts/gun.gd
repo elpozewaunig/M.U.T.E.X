@@ -5,8 +5,6 @@ extends Node3D
 # Ensure this matches your file path EXACTLY
 var missile_scene = load("res://scenes/Missile.tscn")
 
-signal spawnMissileClicked(isHost:bool, position, transform)
-
 func _process(_delta):
 	# Input Guard: Only the local player can request a shot
 	if not owner.is_multiplayer_authority():
@@ -15,7 +13,35 @@ func _process(_delta):
 	if Input.is_action_just_pressed("shoot"):
 		# Networking Check
 		if multiplayer.is_server():
-			spawnMissileClicked.emit(true, gun_ray.global_position, gun_ray.global_transform.basis)
+			spawn_missile(true, gun_ray.global_position, gun_ray.global_transform.basis)
 		else:
-			spawnMissileClicked.emit(false, gun_ray.global_position, gun_ray.global_transform.basis)
+			rpc_id(1, "spawn_missile", false, gun_ray.global_position, gun_ray.global_transform.basis)
+
+@rpc("any_peer", "call_local")
+func spawn_missile(isHost, position, transform):
+	# Security: Only Server spawns
+	if not multiplayer.is_server(): return
+
+	# 1. Instantiate
+	var missile = missile_scene.instantiate()
 	
+	# 2. Force Unique Name (PREVENTS "Node Not Found" ERRORS)
+	missile.name = "M_%d" % randi()
+	
+	# 3. Find Container
+	var container = get_node("/root/LevelScene/Bullets/")
+	if not container:
+		printerr("Gun Error: No 'Bullets' node found in LevelScene")
+		return
+
+	# 4. Add Child (Networked)
+	container.add_child(missile, true)
+	
+	# 5. Position & Rotation
+	missile.global_position = position
+	missile.global_transform.basis = transform
+	
+	# 6. Setup Logic
+	# owner.name == "1" checks if the shooter is the Host
+	if missile.has_method("setup_server_logic"):
+		missile.setup_server_logic(isHost)

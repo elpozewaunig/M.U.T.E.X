@@ -13,6 +13,7 @@ var velocity := Vector3.ZERO
 var current_target: Node3D = null
 
 func _ready():
+	set_multiplayer_authority(1)
 	# 1. Cleanup
 	$LifeTimer.timeout.connect(queue_free)
 	body_entered.connect(_on_impact)
