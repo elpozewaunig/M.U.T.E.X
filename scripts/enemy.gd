@@ -55,6 +55,7 @@ var current_patrol_index = 0
 var target_player: CharacterBody3D = null
 var smooth_avoidance: Vector3 = Vector3.ZERO
 var smooth_velocity: Vector3 = Vector3.ZERO
+var is_dead: bool = false
 
 func _ready() -> void:
 	# If typeId was synced before _ready ran, ensure logic runs now
@@ -403,8 +404,8 @@ func shoot_gun() -> void:
 
 @rpc("any_peer", "call_local")
 func take_damage(damage_amount):
-	if not multiplayer.is_server():
-		rpc_id(1, "take_damage", damage_amount)
+	if not multiplayer or not multiplayer.is_server():
+#		rpc_id(1, "take_damage", damage_amount)
 		return
 
 	health -= damage_amount
@@ -412,8 +413,16 @@ func take_damage(damage_amount):
 	if health <= 0:
 		ScoreManager.add_score(1)
 		die()
-
+		
 func die() -> void:
+	rpc("die_and_free")
+
+@rpc("call_local", "reliable")
+func die_and_free() -> void:	
+	if not is_inside_tree() or is_dead:
+		return
+	
+	is_dead = true
 	print("Enemy died")
 	guns.hide()
 	$Visuals.hide()

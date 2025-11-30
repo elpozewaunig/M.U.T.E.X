@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://cindsixiocgcm" path="res://scripts/enemyVisibility.gd" id="3_4ra3w"]
 [ext_resource type="PackedScene" uid="uid://dls7354f4iw2m" path="res://scenes/enemy_gun.tscn" id="3_5uy6h"]
 [ext_resource type="PackedScene" uid="uid://be63w05i85cw1" path="res://scenes/thruster_exhaustEnemy.tscn" id="3_nenq2"]
-[ext_resource type="PackedScene" uid="uid://bxlhblwuef6wy" path="res://scenes/enemyModel.tscn" id="4_c4w8v"]
+[ext_resource type="PackedScene" path="res://scenes/enemyModel.tscn" id="4_c4w8v"]
 [ext_resource type="PackedScene" uid="uid://cvwnv2lgiecdf" path="res://scenes/explosion.tscn" id="6_xwavj"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_8tegq"]
@@ -108,9 +108,10 @@ transform = Transform3D(0.6, 0, 0, 0, -2.6226834e-08, 0.6, 0, -0.6, -2.6226834e-
 [node name="enemy2" parent="Visuals" instance=ExtResource("4_c4w8v")]
 transform = Transform3D(-0.25, 0, -2.1855694e-08, 0, 0.25, 0, 2.1855694e-08, 0, -0.25, 0, 0, 0)
 
-[node name="VisibilityConstroller" type="Node3D" parent="." node_paths=PackedStringArray("visuals_node")]
+[node name="VisibilityConstroller" type="Node3D" parent="." node_paths=PackedStringArray("visuals_node", "guns_node")]
 script = ExtResource("3_4ra3w")
 visuals_node = NodePath("../Visuals")
+guns_node = NodePath("../Guns")
 
 [node name="PlayerShapeCast" type="ShapeCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, -11.340929)
