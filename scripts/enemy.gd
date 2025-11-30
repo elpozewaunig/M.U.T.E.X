@@ -404,7 +404,7 @@ func shoot_gun() -> void:
 
 @rpc("any_peer", "call_local")
 func take_damage(damage_amount):
-	if not multiplayer.is_server():
+	if not multiplayer or not multiplayer.is_server():
 #		rpc_id(1, "take_damage", damage_amount)
 		return
 
