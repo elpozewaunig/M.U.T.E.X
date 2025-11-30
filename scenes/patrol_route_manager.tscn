@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bcglhcauxwnwl"]
+[gd_scene load_steps=9 format=3 uid="uid://bcglhcauxwnwl"]
 
 [ext_resource type="Script" path="res://scripts/patrol_route_manager.gd" id="1_qcgb2"]
 
@@ -13,7 +13,7 @@ point_count = 4
 [sub_resource type="Curve3D" id="Curve3D_qcgb2"]
 closed = true
 _data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -120.598145, 36.612793, -1174.0765, 0, 0, 0, 0, 0, 0, 155.25189, 330.29272, -738.16986, 0, 0, 0, 0, 0, 0, 276.52606, 336.8363, 183.9357, 0, 0, 0, 0, 0, 0, 12.302002, -144.64008, 980.2426, 0, 0, 0, 0, 0, 0, -364.6923, -477.65857, -8.815465),
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -120.598145, 36.612793, -1174.0765, 0, 0, 0, 0, 0, 0, 155.25189, 330.29272, -738.16986, 0, 0, 0, 0, 0, 0, 276.52606, 336.8363, 183.9357, 0, 0, 0, 0, 0, 0, 12.302002, 78.606735, 980.2426, 0, 0, 0, 0, 0, 0, -364.6923, -410.21674, -301.66992),
 "tilts": PackedFloat32Array(0, 0, 0, 0, 0)
 }
 point_count = 5
@@ -26,6 +26,38 @@ _data = {
 }
 point_count = 4
 
+[sub_resource type="Curve3D" id="Curve3D_q3bkq"]
+closed = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -318.7375, -330.43958, 586.03015, 0, 0, 0, 0, 0, 0, 56.47467, -263.052, 578.4127, 0, 0, 0, 0, 0, 0, 672.78, -582.23285, 415.32617, 0, 0, 0, 0, 0, 0, 589.45776, 1205.7056, 137.2095, 0, 0, 0, 0, 0, 0, -428.93512, 278.91168, 95.147156, 0, 0, 0, 0, 0, 0, -307.55286, -328.5951, -83.60071),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0)
+}
+point_count = 6
+
+[sub_resource type="Curve3D" id="Curve3D_0tcoy"]
+closed = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -454.44458, 358.7712, -1184.7693, 0, 0, 0, 0, 0, 0, 114.39209, 500.41205, -1164.0325, 0, 0, 0, 0, 0, 0, -296.7135, -304.93707, 1037.4623, 0, 0, 0, 0, 0, 0, 423.03134, -24.554413, 804.06354),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
+
+[sub_resource type="Curve3D" id="Curve3D_atf20"]
+closed = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 128.74927, -53.428406, 1190.1355, 0, 0, 0, 0, 0, 0, 313.83557, -735.8634, -772.8435, 0, 0, 0, 0, 0, 0, 712.11914, -159.26324, -991.6035, 0, 0, 0, 0, 0, 0, 623.7906, 518.52466, -906.94336),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
+
+[sub_resource type="Curve3D" id="Curve3D_xe72w"]
+closed = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -91.9093, -434.84338, 668.3838, 0, 0, 0, 0, 0, 0, 26.261475, -332.90033, -951.1123, 0, 0, 0, 0, 0, 0, 515.032, 364.13892, -138.75278, 0, 0, 0, 0, 0, 0, 183.10614, 22.130737, 908.54755, 0, 0, 0, 0, 0, 0, 262.50983, 151.21826, 1277.7881, 0, 0, 0, 0, 0, 0, -22.207825, -269.6261, 1330.9719, 0, 0, 0, 0, 0, 0, 38.156982, -562.4788, 1311.9796, 0, 0, 0, 0, 0, 0, -276.4745, -627.5415, -412.0982),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 8
+
 [node name="PatrolRouteManager" type="Node3D"]
 script = ExtResource("1_qcgb2")
 
@@ -37,3 +69,15 @@ curve = SubResource("Curve3D_qcgb2")
 
 [node name="PatrolPathC" type="Path3D" parent="." groups=["PatrolPaths"]]
 curve = SubResource("Curve3D_01hsn")
+
+[node name="PatrolPathD" type="Path3D" parent="."]
+curve = SubResource("Curve3D_q3bkq")
+
+[node name="PatrolPathE" type="Path3D" parent="."]
+curve = SubResource("Curve3D_0tcoy")
+
+[node name="PatrolPathF" type="Path3D" parent="."]
+curve = SubResource("Curve3D_atf20")
+
+[node name="PatrolPathG" type="Path3D" parent="."]
+curve = SubResource("Curve3D_xe72w")

@@ -34,6 +34,9 @@ var typeId: int; # 1 -> Seen by Host/Shot by Client, 2 -> Seen by Client/Shot by
 @export_group("Path Settings")
 @export var PATROL_PATH_GROUP_NAME = "PatrolPaths"
 @export var PLAYERS_GROUP_NAME = "Players"
+@export var type1:Color
+@export var type2:Color
+@export var ship:Node3D
 
 # State Machine
 enum { PATROLLING, CHASING, ATTACKING }
@@ -85,12 +88,15 @@ func setup_enemy_type(id: int):
 			set_collision_mask_value(1, true)
 			set_collision_mask_value(4, true)
 			set_collision_mask_value(5, true)
+			ship.get_child(0).mesh.surface_get_material(1).albedo_color=type1
+			
 		2:
 			# Layer 3 | Mask: 1, 4, 5
 			set_collision_layer_value(3, true)
 			set_collision_mask_value(1, true)
 			set_collision_mask_value(4, true)
 			set_collision_mask_value(5, true)
+			ship.get_child(0).mesh.surface_get_material(1).albedo_color=type2
 		_:
 			push_error("Unknown enemy type: %d" % id)
 			

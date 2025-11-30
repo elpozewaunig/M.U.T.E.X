@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://bxlhblwuef6wy"]
+
+[ext_resource type="PackedScene" uid="uid://b3aj32sk5v1qo" path="res://assets/models/enemy.glb" id="1_06tp7"]
+[ext_resource type="Material" uid="uid://bcskukux6fk2m" path="res://assets/models/thruster_exhaust/xray_pass1.tres" id="2_qcl4e"]
+[ext_resource type="Shader" uid="uid://d4f0hcyxxtohf" path="res://assets/models/thruster_exhaust/outline_shader.gdshader" id="3_p5blx"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_42toi"]
+render_priority = 0
+next_pass = ExtResource("2_qcl4e")
+shader = ExtResource("3_p5blx")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_width = 7.0
+shader_parameter/constant_width = true
+
+[node name="enemy" instance=ExtResource("1_06tp7")]
+
+[node name="Cylinder_005" parent="." index="0"]
+material_overlay = SubResource("ShaderMaterial_42toi")
