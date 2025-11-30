@@ -7,7 +7,8 @@ func apply_visibility(type_id: int):
 	# Logic:
 	# Type 1: Visible to Host (Server), Invisible to Client
 	# Type 2: Invisible to Host, Visible to Client
-	
+	print("apply Visibility")
+	print(str(type_id))
 	if type_id == 1:
 		visuals_node.visible = is_host
 	elif type_id == 2:

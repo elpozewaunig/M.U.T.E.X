@@ -1,7 +1,14 @@
 extends CharacterBody3D
 
 var health = 100
-var typeId: int; # 1 -> Seen by Host/Shot by Client, 2 -> Seen by Client/Shot by Host
+
+# --- CHANGE 1: Use a Setter to trigger setup automatically ---
+@export var typeId: int = 0:
+	set(value):
+		typeId = value
+		# Run the setup logic whenever this value changes (on Server AND Client)
+		# We use call_deferred to ensure the node is fully ready in the tree
+		call_deferred("_apply_enemy_type_settings")
 
 @onready var player_shape_cast: ShapeCast3D = $PlayerShapeCast
 @onready var guns: Node3D = $Guns
@@ -17,16 +24,16 @@ var typeId: int; # 1 -> Seen by Host/Shot by Client, 2 -> Seen by Client/Shot by
 @export_group("Visual Banking")
 @export var max_bank_angle := 70.0
 @export var bank_smoothness := 5.0 
-@export var max_pitch_angle := 75.0 
+@export var max_pitch_angle := 45.0 
 
 @export_group("Combat Settings")
 @export var ATTACK_RANGE = 50.0
 @export var AVOID_RANGE = 20.0
 
 @export_group("Obstacle Avoidance")
-@export var OBSTACLE_DETECT_DISTANCE = 70.0 # How far ahead are obstacles detected
-@export var AVOIDANCE_FORCE = 3.0 # how strong should the avoidance movement be
-@export var RAYCAST_COUNT = 36 # how many directions are tested for collision avoidance
+@export var OBSTACLE_DETECT_DISTANCE = 70.0
+@export var AVOIDANCE_FORCE = 3.0
+@export var RAYCAST_COUNT = 36 
 @export var ASTEROID_COLLISION_LAYER = 1
 @export var BODY_WIDTH = 15.0
 @export var BODY_HEIGHT = 1.5 
@@ -38,57 +45,52 @@ var typeId: int; # 1 -> Seen by Host/Shot by Client, 2 -> Seen by Client/Shot by
 @export var type2:Color
 @export var ship:Node3D
 
-# State Machine
 enum { PATROLLING, CHASING, ATTACKING }
 var current_state = PATROLLING
 
-# Patrol System
 var patrol_points: Array[Vector3] = []
 var current_patrol_index = 0
-
-# Target Tracking
 var target_player: CharacterBody3D = null
-
 var smooth_avoidance: Vector3 = Vector3.ZERO
 var smooth_velocity: Vector3 = Vector3.ZERO
 
 func _ready() -> void:
-	# Only the Server runs the AI Logic loop.
-	# Clients just exist to show the mesh and have collisions.
+	# If typeId was synced before _ready ran, ensure logic runs now
+	if typeId != 0:
+		_apply_enemy_type_settings()
+		
 	if not is_multiplayer_authority():
 		return
 		
 	gun_cooldown_timer.start()
 
-# Called by the Spawner (Level Script) on the SERVER only
+# --- CHANGE 2: Simplified Initialize (Server Only) ---
 func initialize(enemy_type_id: int, path_points: Array[Vector3]) -> void:
-	# 1. SETUP PATHING (Server Only)
 	patrol_points = path_points
 	if not patrol_points.is_empty():
 		var random_index = randi() % path_points.size()
 		global_position = patrol_points[random_index]
 	
-	# 2. SETUP TYPE (Networked)
-	# We use an RPC so the Client gets the message to set up Layers & Visuals
-	rpc("setup_enemy_type", enemy_type_id)
+	# Setting this variable triggers the SETTER on the Server.
+	# The MultiplayerSynchronizer detects the change and updates the Client.
+	# The Client's SETTER runs, executing the logic.
+	typeId = enemy_type_id
 
-# This function runs on Server AND Clients
-@rpc("call_local", "reliable")
-func setup_enemy_type(id: int):
-	typeId = id
-	
+# --- CHANGE 3: Logic Function (No RPC needed) ---
+func _apply_enemy_type_settings():
 	# Reset Layers
 	collision_layer = 0
 	collision_mask = 0
 	
-	match id:
+	match typeId:
 		1:
 			# Layer 2 | Mask: 1 (Map), 4 (Host), 5 (Client)
 			set_collision_layer_value(2, true)
 			set_collision_mask_value(1, true)
 			set_collision_mask_value(4, true)
 			set_collision_mask_value(5, true)
-			ship.get_child(0).mesh.surface_get_material(1).albedo_color=type1
+			if ship and ship.get_child_count() > 0:
+				ship.get_child(0).mesh.surface_get_material(1).albedo_color = type1
 			
 		2:
 			# Layer 3 | Mask: 1, 4, 5
@@ -96,35 +98,18 @@ func setup_enemy_type(id: int):
 			set_collision_mask_value(1, true)
 			set_collision_mask_value(4, true)
 			set_collision_mask_value(5, true)
-			ship.get_child(0).mesh.surface_get_material(1).albedo_color=type2
+			if ship and ship.get_child_count() > 0:
+				ship.get_child(0).mesh.surface_get_material(1).albedo_color = type2
 		_:
-			push_error("Unknown enemy type: %d" % id)
+			# Type 0 or error
+			return
 			
-	# Apply Visibility (Handling potential typo in node name)
+	# Apply Visibility
 	if has_node("VisibilityController"):
 		$VisibilityController.apply_visibility(typeId)
 	elif has_node("VisibilityConstroller"):
 		$VisibilityConstroller.apply_visibility(typeId)
 
-func _setup_patrol_path() -> void:
-	var all_paths: Array = get_tree().get_nodes_in_group(PATROL_PATH_GROUP_NAME)
-	if all_paths.is_empty():
-		push_error("No Path3D nodes with group '%s' found" % PATROL_PATH_GROUP_NAME)
-		return
-	
-	# Take random path
-	var selected_path: Path3D = all_paths.pick_random()
-	_load_patrol_points(selected_path)
-	
-	# print("Enemy spawned with %d patrol points" % patrol_points.size())
-
-func _load_patrol_points(path: Path3D) -> void:
-	patrol_points.clear()
-	var curve: Curve3D = path.curve
-	for i in range(curve.point_count):
-		var local_point = curve.get_point_position(i)
-		var global_point = path.to_global(local_point)
-		patrol_points.append(global_point)
 
 func _physics_process(delta: float) -> void:
 	# Only Server calculates movement
@@ -231,7 +216,6 @@ func detect_obstacles(desired_direction: Vector3) -> Vector3:
 			var test_enemy_clear = check_enemy_ray(global_position, test_direction, OBSTACLE_DETECT_DISTANCE * 0.6)
 			
 			if test_asteroid_clear and test_enemy_clear:
-				# Score: prefer directions close to desired direction
 				var score = test_direction.dot(desired_direction)
 				if score > best_score:
 					best_score = score
@@ -243,10 +227,8 @@ func detect_obstacles(desired_direction: Vector3) -> Vector3:
 	smooth_avoidance = smooth_avoidance.lerp(avoidance_vector, 0.15)
 	return smooth_avoidance
 
-
 func check_asteroid_ray(from: Vector3, direction: Vector3, distance: float) -> bool:
 	var space_state = get_world_3d().direct_space_state
-	
 	var right = global_transform.basis.x.normalized()
 	var up = global_transform.basis.y.normalized()
 	var wing_offset = BODY_WIDTH / 2.0
@@ -270,11 +252,9 @@ func check_asteroid_ray(from: Vector3, direction: Vector3, distance: float) -> b
 		var query = PhysicsRayQueryParameters3D.create(test_from, test_to)
 		query.exclude = [self]
 		query.collision_mask = ASTEROID_COLLISION_LAYER
-		
 		var result = space_state.intersect_ray(query)
 		if not result.is_empty():
 			return false
-	
 	return true
 
 func check_enemy_ray(from: Vector3, direction: Vector3, distance: float) -> bool:
@@ -290,7 +270,6 @@ func check_enemy_ray(from: Vector3, direction: Vector3, distance: float) -> bool
 	# Offset Rays
 	var right = global_transform.basis.x.normalized()
 	var up = global_transform.basis.y.normalized()
-	
 	var wing_offset = BODY_WIDTH / 2.0
 	var height_offset = BODY_HEIGHT / 2.0
 	
@@ -304,7 +283,6 @@ func check_enemy_ray(from: Vector3, direction: Vector3, distance: float) -> bool
 	for offset_pos in offsets:
 		if not _single_ray_check(space_state, offset_pos, direction, distance, (1 << 1) | (1 << 2)):
 			return false
-	
 	return true
 
 func _single_ray_check(space_state: PhysicsDirectSpaceState3D, from: Vector3, direction: Vector3, distance: float, mask: int) -> bool:
@@ -314,15 +292,12 @@ func _single_ray_check(space_state: PhysicsDirectSpaceState3D, from: Vector3, di
 	)
 	query.exclude = [self]
 	query.collision_mask = mask
-	
 	var result = space_state.intersect_ray(query)
 	return result.is_empty()
 
 func move_in_direction(direction: Vector3, delta: float) -> void:
 	if direction.length_squared() > 0.001:
 		rotate_towards(direction, delta)
-		
-		# Smooth velocity changes
 		var target_velocity = direction * MOVEMENT_SPEED
 		smooth_velocity = smooth_velocity.lerp(target_velocity, 8.0 * delta)
 		velocity = smooth_velocity
@@ -339,11 +314,9 @@ func rotate_towards(direction: Vector3, delta: float) -> void:
 		return
 	
 	var normalized_direction = direction.normalized()
-	
 	var local_target_dir = global_transform.basis.inverse() * normalized_direction
 	var target_bank = -local_target_dir.x * max_bank_angle
 	var target_pitch = local_target_dir.y * max_pitch_angle 
-	
 	target_bank = clampf(target_bank, -max_bank_angle, max_bank_angle)
 	target_pitch = clampf(target_pitch, -max_pitch_angle, max_pitch_angle)
 	
@@ -352,15 +325,11 @@ func rotate_towards(direction: Vector3, delta: float) -> void:
 		model_container.rotation.x = lerp(model_container.rotation.x, deg_to_rad(target_pitch), delta * bank_smoothness)
 	
 	var target_forward = -normalized_direction
-	
 	var world_up = Vector3.UP
-	# Anti-Gimbal-Lock Check
 	if abs(target_forward.dot(world_up)) > 0.99:
 		world_up = Vector3.BACK 
-
 	var target_right = world_up.cross(target_forward).normalized()
 	var target_up = target_forward.cross(target_right).normalized()
-	
 	var target_basis = Basis(target_right, target_up, target_forward).orthonormalized()
 	
 	basis = basis.slerp(target_basis, ROTATION_SPEED * delta).orthonormalized()
@@ -370,34 +339,28 @@ func is_player_in_sight() -> bool:
 	return player_shape_cast.is_colliding()
 
 func _on_detection_area_body_entered(body: Node3D) -> void:
-	#print("Something entered detection: ", body.name, " Groups: ", body.get_groups())
 	if current_state == PATROLLING and body.is_in_group(PLAYERS_GROUP_NAME):
 		target_player = body
 		current_state = CHASING
-		print("Player detected! Switching to chase mode")
+		#print("Player detected! Switching to chase mode")
 
 func _on_detection_area_body_exited(body: Node3D) -> void:
 	if body == target_player and not is_player_in_sight():
 		target_player = null
 		current_state = PATROLLING
-		print("Player lost! Returning to patrol")
-		
+		#print("Player lost! Returning to patrol")
 
 func shoot_gun() -> void:
 	if has_node("Guns") and is_player_in_sight():
-		
 		if not gun_cooldown_timer.is_stopped():
-			# cooldown timer has not expired yet
 			return
 		
 		var allGuns: Array[Node] = guns.get_children()
-		
 		var selected_gun: Node = allGuns.pick_random()
 		
 		if selected_gun.has_method("shoot_homing_missile"):
 			selected_gun.shoot_homing_missile(self)
 			gun_cooldown_timer.start()
-
 
 @rpc("any_peer", "call_local")
 func take_damage(damage_amount):
