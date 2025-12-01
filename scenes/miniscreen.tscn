@@ -181,7 +181,10 @@ func _on_host_pressed() -> void:
 	for ip in IP.get_local_addresses():
 		if ip.begins_with(\"10.\") or ip.begins_with(\"172.16.\") or ip.begins_with(\"192.168.\"):
 			ips.append(ip)
-	$IPAddress.text = ips[0]
+	if ips.size() > 0:
+		$IPAddress.text = ips[0]
+	else:
+		$IPAddress.text = \"Couldn't find your IP :(\"
 	
 	show()
 	$CANCELHH.grab_focus()
