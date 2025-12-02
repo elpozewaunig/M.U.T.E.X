@@ -20,12 +20,11 @@ stream_4/stream = ExtResource("7_5rgel")
 radius = 0.3
 height = 1.0
 
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_fqlqp"]
+points = PackedVector3Array(-0.7411021, -0.9487593, -0.5631633, 0.02860883, 0.9190812, 0.02860883, 0.02860883, 0.9190812, -0.02860883, 0.9509539, -0.9509539, -0.059201904, -0.059378922, -0.9508073, 0.9508073, 0.059201904, -0.9509539, -0.9509539, -0.6958904, -0.96829426, 0.6958904, 0.6958904, -0.96829426, 0.6958904, 0.6958904, -0.96829426, -0.6958904, -0.9187506, -0.8611938, 0.028598538, -0.6958904, -0.96829426, -0.6958904, -0.02860883, 0.9190812, -0.02860883, -0.02860883, 0.9190812, 0.02860883, 0.028598538, -0.8611938, 0.9187506, 0.9187506, -0.8611938, 0.028598538, -0.028598538, -0.8611938, -0.9187506, -0.9508073, -0.9508073, -0.059378922, 0.059201904, -0.9509539, 0.9509539, -0.9508073, -0.9508073, 0.059378922, 0.9509539, -0.9509539, 0.059201904, -0.059378922, -0.9508073, -0.9508073, -0.028598538, -0.8611938, 0.9187506, -0.9187506, -0.8611938, -0.028598538, 0.028598538, -0.8611938, -0.9187506, 0.9187506, -0.8611938, -0.028598538)
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_7880j"]
 radius = 30.0
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_krm66"]
-radius = 20.253
-height = 78.34985
 
 [node name="Missile" type="Area3D"]
 script = ExtResource("1_ohnc3")
@@ -43,12 +42,12 @@ shape = SubResource("CapsuleShape3D_fqlqp")
 
 [node name="DetectionArea" type="Area3D" parent="."]
 
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="DetectionArea"]
+transform = Transform3D(75, 0, 0, 0, -6.106263e-06, -75, 0, 139.695, -3.2783541e-06, 0, 0, -128.365)
+shape = SubResource("ConvexPolygonShape3D_fqlqp")
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
 shape = SubResource("SphereShape3D_7880j")
-
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="DetectionArea"]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, -40)
-shape = SubResource("CapsuleShape3D_krm66")
 
 [node name="LifeTimer" type="Timer" parent="."]
 wait_time = 2.0
