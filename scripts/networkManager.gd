@@ -57,6 +57,7 @@ func join_game(address):
 	
 	if status != MultiplayerPeer.CONNECTION_CONNECTED:
 		print("No connection after %s seconds, start to host game..." % CLIENT_CONNECTION_TIMEOUT)
+		multiplayer.multiplayer_peer.close()
 		multiplayer.multiplayer_peer = null
 		host_game()
 	
