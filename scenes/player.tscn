@@ -200,10 +200,12 @@ texture = ExtResource("15_fulsm")
 transform = Transform3D(1, 0, 0, 0, 1.0000005, 0, 0, 0, 1.0000005, 0, 0, 0)
 stream = ExtResource("13_4ni07")
 volume_db = 8.474
+bus = &"SFX"
 
 [node name="MissileLock" type="AudioStreamPlayer3D" parent="MissieLock"]
 stream = ExtResource("13_a38lo")
 volume_db = -1.23
+bus = &"SFX"
 
 [node name="shield_scannerparticle_try" type="CPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.953664, 0.300872, 0, -0.300872, -0.953664, -0.0405608, -0.55562, 1.41512)
@@ -300,11 +302,13 @@ shape = SubResource("CapsuleShape3D_fulsm")
 
 [node name="ExplosionSound" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("19_4r5pv")
+bus = &"SFX"
 
 [node name="EngineSound" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("20_60mlk")
 volume_db = 5.0
 autoplay = true
+bus = &"SFX"
 
 [node name="Explosion" parent="." instance=ExtResource("18_fulsm")]
 
