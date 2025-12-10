@@ -32,10 +32,6 @@ window/size/always_on_top=true
 window/stretch/mode="canvas_items"
 window/size/mode.editor=0
 
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/ridiculous_coding/plugin.cfg")
-
 [input]
 
 ui_accept={
